@@ -1,0 +1,21 @@
+[
+  {
+    "modid": "minecord",
+    "name": "Minecord",
+    "description": "",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Vatuu",
+      "DeJay"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": [
+      ""
+    ]
+  }
+]

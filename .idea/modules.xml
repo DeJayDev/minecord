@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Minecord.iml" filepath="$PROJECT_DIR$/Minecord.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Minecord_api.iml" filepath="$PROJECT_DIR$/.idea/modules/Minecord_api.iml" group="Minecord" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Minecord_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Minecord_main.iml" group="Minecord" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Minecord_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Minecord_test.iml" group="Minecord" />
+    </modules>
+  </component>
+</project>
