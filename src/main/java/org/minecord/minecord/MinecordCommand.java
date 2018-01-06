@@ -2,31 +2,20 @@ package org.minecord.minecord;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 
 public class MinecordCommand extends CommandBase{
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "minecord";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender){
-        return "Send Minecord Data?";
-    }
+    public String getUsage(ICommandSender e) { return ""; }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args){
-        if(sender instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) sender;
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 
-            player.addChatMessage(new ChatComponentText("Sent Discord a Detail of: " + rich.state));
-            player.addChatMessage(new ChatComponentText("Check console for the raw sauce"));
-            System.out.println(rich);
-
-        }
     }
-
 }
