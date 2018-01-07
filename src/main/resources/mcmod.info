@@ -2,20 +2,15 @@
   {
     "modid": "minecord",
     "name": "Minecord",
-    "description": "",
+    "description": "'dis some rad Discord Minecraft Crossover!",
     "version": "${version}",
     "mcversion": "${mcversion}",
-    "url": "",
+    "url": "coming.soon.net/derp",
     "updateUrl": "",
-    "authorList": [
-      "Vatuu",
-      "DeJay"
-    ],
+    "authorList": ["Vatuu", "DeJay"],
     "credits": "",
     "logoFile": "",
     "screenshots": [],
-    "dependencies": [
-      ""
-    ]
+    "dependencies": [""]
   }
 ]
