@@ -9,11 +9,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-public class JoinConnectMessage implements IMessage {
+public class PacketMinecordOutConnectRequest implements IMessage {
 
     private String text;
 
-    public JoinConnectMessage(UUID uuid, String version){
+    public PacketMinecordOutConnectRequest() {}
+
+    public PacketMinecordOutConnectRequest(UUID uuid, String version){
         JsonObject json = new JsonObject();
         json.addProperty("version", version);
         json.addProperty("uuid", uuid.toString());
@@ -30,9 +32,9 @@ public class JoinConnectMessage implements IMessage {
     }
 
     //NOT NEEDED; OUT ONLY!
-    public static class Handler implements IMessageHandler<JoinConnectMessage, IMessage>{
+    public static class Handler implements IMessageHandler<PacketMinecordOutConnectRequest, IMessage>{
 
         @Override
-        public IMessage onMessage(JoinConnectMessage message, MessageContext ctx) { return null; }
+        public IMessage onMessage(PacketMinecordOutConnectRequest message, MessageContext ctx) { return null; }
     }
 }

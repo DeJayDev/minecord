@@ -1,4 +1,4 @@
-package org.minecord.minecord;
+package org.minecord.minecord.discord;
 
 
 import net.arikia.dev.drpc.callbacks.ReadyCallback;
