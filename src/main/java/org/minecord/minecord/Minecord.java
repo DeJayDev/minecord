@@ -1,20 +1,22 @@
 package org.minecord.minecord;
 
-import net.minecraft.client.gui.toasts.GuiToast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.minecord.minecord.discord.DiscordUtil;
 import org.minecord.minecord.discord.ReadyClass;
 import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
-;
+
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 
 @Mod(modid = Minecord.MODID, version = Minecord.VERSION, useMetadata = true)
 public class Minecord {
@@ -38,12 +40,19 @@ public class Minecord {
 
         discordUtil.eventHandler.ready = new ReadyClass();
         discordUtil.initializeDiscord();
+        ConfigManager.getModConfigClasses(MODID);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new Events()) ;
+        discordUtil.initializeDiscord();
+    }
+
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent e){
+        discordUtil.initializeDiscord();
     }
 
     public static class Events{

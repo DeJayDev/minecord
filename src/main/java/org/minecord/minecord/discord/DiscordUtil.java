@@ -21,4 +21,8 @@ public class DiscordUtil {
     public void updatePresence(DiscordRichPresence p){
         DiscordRPC.DiscordUpdatePresence(p);
     }
+
+    public void runCallbacks(){
+        DiscordRPC.DiscordRunCallbacks();
+    }
 }
