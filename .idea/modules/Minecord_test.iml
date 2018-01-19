@@ -37,7 +37,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/hypixel-api.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../libs/discord-rpc-0.9-BETA-4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -61,7 +61,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: com.github.Vatuu:discord-rpc:0.9-beta.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.Vatuu:discord-rpc:0.9-beta.5" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

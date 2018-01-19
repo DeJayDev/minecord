@@ -15,14 +15,14 @@ public class DiscordUtil {
     }
 
     public void initializeDiscord(){
-        DiscordRPC.DiscordInitialize(APP_ID, eventHandler, true);
+        DiscordRPC.discordInitialize(APP_ID, eventHandler, true);
     }
 
     public void updatePresence(DiscordRichPresence p){
-        DiscordRPC.DiscordUpdatePresence(p);
+        DiscordRPC.discordUpdatePresence(p);
     }
 
     public void runCallbacks(){
-        DiscordRPC.DiscordRunCallbacks();
+        DiscordRPC.discordRunCallbacks();
     }
 }

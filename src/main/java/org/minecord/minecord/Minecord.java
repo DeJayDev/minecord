@@ -10,14 +10,15 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.minecord.minecord.discord.DiscordUtil;
-import org.minecord.minecord.discord.ReadyClass;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.minecord.minecord.discord.*;
 import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
 
+@SideOnly(Side.CLIENT)
 @Mod(modid = Minecord.MODID, version = Minecord.VERSION, useMetadata = true)
 public class Minecord {
 
@@ -38,8 +39,14 @@ public class Minecord {
         packetHandler = new PacketHandler();
         discordUtil = new DiscordUtil();
 
-        discordUtil.eventHandler.ready = new ReadyClass();
+        discordUtil.eventHandler.ready = new ReadyEvent();
+        discordUtil.eventHandler.disconnected = new DisconnectedEvent();
+        discordUtil.eventHandler.errored = new ErroredEvent();
+        discordUtil.eventHandler.joinGame = new JoinGameEvent();
+        discordUtil.eventHandler.joinRequest = new JoinRequestEvent();
+        discordUtil.eventHandler.spectateGame = new SpectateGameEvent();
         discordUtil.initializeDiscord();
+
         ConfigManager.getModConfigClasses(MODID);
     }
 
