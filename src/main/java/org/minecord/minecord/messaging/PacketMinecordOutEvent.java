@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.minecord.minecord.Minecord;
 import org.minecord.minecord.MinecordConfig;
 import org.minecord.minecord.MinecordToast;
 
@@ -26,6 +27,7 @@ public class PacketMinecordOutEvent implements IMessage{
     public PacketMinecordOutEvent(@Nullable JsonObject payload, EventType type){
         this.type = type;
         json = new JsonObject();
+        json.addProperty("discriminator", Minecord.INSTANCE.packetHandler.getDiscriminator());
         json.addProperty("eventType", type.toString());
 
         if(payload != null)

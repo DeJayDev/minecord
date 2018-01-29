@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-public class PacketMinecordOutConnectRequest implements IMessage {
+public class    PacketMinecordOutConnectRequest implements IMessage {
 
     private String text;
 

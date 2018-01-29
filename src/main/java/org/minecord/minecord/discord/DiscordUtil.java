@@ -22,6 +22,8 @@ public class DiscordUtil {
         DiscordRPC.discordUpdatePresence(p);
     }
 
+    public void clearPresence() { DiscordRPC.discordClearPresence(); }
+
     public void runCallbacks(){
         DiscordRPC.discordRunCallbacks();
     }

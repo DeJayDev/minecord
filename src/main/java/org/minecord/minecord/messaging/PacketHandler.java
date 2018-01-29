@@ -40,5 +40,6 @@ public class PacketHandler {
 
     public void registerPresenceMessage(){
         CHANNEL_PRESENCE.registerMessage(PacketMinecordInUpdatePresence.Handler.class, PacketMinecordInUpdatePresence.class, discriminator, Side.CLIENT);
+        CHANNEL_PRESENCE.registerMessage(PacketMinecordInClearPresence.Handler.class, PacketMinecordInClearPresence.class, discriminator, Side.CLIENT);
     }
 }

@@ -85,11 +85,11 @@ public class PacketMinecordInUpdatePresence implements IMessage {
         if (json.has("secrets")) {
             JsonObject secrets = json.getAsJsonObject("secrets");
             if (secrets.has("match"))
-                presence.matchSecret = json.get("match").getAsString();
+                presence.matchSecret = secrets.get("match").getAsString();
             if (secrets.has("spectate"))
-                presence.spectateSecret = json.get("spectate").getAsString();
+                presence.spectateSecret = secrets.get("spectate").getAsString();
             if (secrets.has("join"))
-                presence.joinSecret = json.get("join").getAsString();
+                presence.joinSecret = secrets.get("join").getAsString();
         }
         if (json.has("instance"))
             presence.instance = json.get("instance").getAsBoolean() ? 1 : 0;

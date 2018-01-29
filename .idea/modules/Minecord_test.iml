@@ -61,7 +61,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: com.github.Vatuu:discord-rpc:0.9-beta.5" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.Vatuu:discord-rpc:0.9-beta.6" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
