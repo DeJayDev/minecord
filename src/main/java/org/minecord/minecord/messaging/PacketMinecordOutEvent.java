@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.minecord.minecord.Minecord;
 import org.minecord.minecord.MinecordConfig;
-import org.minecord.minecord.MinecordToast;
+import org.minecord.minecord.gui.GuiMinecordToast;
 
 import javax.annotation.Nullable;
 import java.nio.charset.Charset;
@@ -37,7 +37,7 @@ public class PacketMinecordOutEvent implements IMessage{
     @Override
     public void toBytes(ByteBuf buf) {
         if(MinecordConfig.allowToasts)
-            Minecraft.getMinecraft().getToastGui().add(new MinecordToast(MinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Event dispatched!"), new TextComponentString("Type: " + type.toString())));
+            Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Event dispatched!"), new TextComponentString("Type: " + type.toString())));
         if(json != null)
             buf.writeBytes(json.toString().getBytes(Charset.forName("UTF-8")));
     }

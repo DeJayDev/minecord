@@ -1,4 +1,4 @@
-package org.minecord.minecord;
+package org.minecord.minecord.gui;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.toasts.GuiToast;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 
 @SideOnly(Side.CLIENT)
-public class MinecordToast implements IToast{
+public class GuiMinecordToast implements IToast{
 
     private final ResourceLocation TEXTURE_TOASTS = new ResourceLocation("minecord:textures/gui/toasts.png");
 
@@ -22,7 +22,7 @@ public class MinecordToast implements IToast{
     private long firstDrawTime;
     private boolean drawed = true;
 
-    public MinecordToast(Icons icon, ITextComponent title, @Nullable ITextComponent subtitle){
+    public GuiMinecordToast(Icons icon, ITextComponent title, @Nullable ITextComponent subtitle){
         this.icon = icon;
         this.title = title.getUnformattedText();
         this.subtitle = subtitle == null ? null : subtitle.getUnformattedText();

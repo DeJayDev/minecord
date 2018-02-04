@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-    shade 'com.github.Vatuu:discord-rpc:0.9-beta.6'
+    shade 'com.github.Vatuu:discord-rpc:1.0'
 }
 
 processResources {

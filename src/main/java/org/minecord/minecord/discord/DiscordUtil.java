@@ -18,6 +18,10 @@ public class DiscordUtil {
         DiscordRPC.discordInitialize(APP_ID, eventHandler, true);
     }
 
+    public void registerExecutablePath(String command){
+        DiscordRPC.discordRegister(APP_ID, command);
+    }
+
     public void updatePresence(DiscordRichPresence p){
         DiscordRPC.discordUpdatePresence(p);
     }

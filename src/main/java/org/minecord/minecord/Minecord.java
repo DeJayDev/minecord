@@ -1,8 +1,9 @@
 package org.minecord.minecord;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -10,9 +11,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.minecord.minecord.discord.*;
+import org.minecord.minecord.gui.GuiHandler;
 import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
 
@@ -47,7 +50,7 @@ public class Minecord {
         discordUtil.eventHandler.spectateGame = new SpectateGameEvent();
         discordUtil.initializeDiscord();
 
-        ConfigManager.getModConfigClasses(MODID);
+        MinecordConfig.init(e.getModConfigurationDirectory());
     }
 
     @EventHandler
@@ -55,6 +58,7 @@ public class Minecord {
     {
         MinecraftForge.EVENT_BUS.register(new Events()) ;
         discordUtil.initializeDiscord();
+        NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
     }
 
     @EventHandler
@@ -69,7 +73,12 @@ public class Minecord {
             if(!(e.getEntity() instanceof EntityPlayer))
                 return;
 
+            EntityPlayer p = (EntityPlayer)e.getEntity();
+            BlockPos pos = p.getPosition();
+
             UUID = e.getEntity().getUniqueID();
+
+            p.openGui(Minecord.INSTANCE, GuiHandler.ID_REGISTER_REQUEST, e.getWorld(), pos.getX(), pos.getY(), pos.getZ());
 
             Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(UUID, VERSION));
         }

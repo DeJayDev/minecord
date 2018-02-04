@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.minecord.minecord.Minecord;
 import org.minecord.minecord.MinecordConfig;
-import org.minecord.minecord.MinecordToast;
+import org.minecord.minecord.gui.GuiMinecordToast;
 
 import java.nio.charset.Charset;
 
@@ -45,11 +45,11 @@ public class PacketMinecordInConnectResponse implements IMessage {
         public IMessage onMessage(PacketMinecordInConnectResponse response, MessageContext ctx) {
             if(!response.success){
                 if(MinecordConfig.allowToasts)
-                Minecraft.getMinecraft().getToastGui().add(new MinecordToast(MinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Connection failure!"), null));
+                Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Connection failure!"), null));
             }else{
                 Minecord.INSTANCE.packetHandler.registerPresenceMessage();
                 if(MinecordConfig.allowToasts)
-                    Minecraft.getMinecraft().getToastGui().add(new MinecordToast(MinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Successfully connected!"), new TextComponentString("Discriminator: " + Minecord.INSTANCE.packetHandler.getDiscriminator())));
+                    Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Successfully connected!"), new TextComponentString("Discriminator: " + Minecord.INSTANCE.packetHandler.getDiscriminator())));
             }
             return null;
         }

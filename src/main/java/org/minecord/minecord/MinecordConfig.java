@@ -1,25 +1,27 @@
 package org.minecord.minecord;
 
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.common.config.Configuration;
 
-@Config(modid = Minecord.MODID)
+import java.io.File;
+import java.io.IOException;
+
 public class MinecordConfig {
 
-    @Config.Comment("Wether or not Minecord is allowed to send ToastMessages while ingame.")
-    public static boolean allowToasts = true;
+    public static boolean allowToasts;
 
-    @Mod.EventBusSubscriber(modid = Minecord.MODID)
-    private static class EventHandler{
+    public static void init(File location) {
+        File newFile = new File(location + "/minecord" + "/Minecord_General.cfg");
 
-        @SubscribeEvent
-        public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event){
-            if(event.getModID().equals(Minecord.MODID)){
-                ConfigManager.sync(Minecord.MODID, Config.Type.INSTANCE);
-            }
-        }
+        try{
+            newFile.createNewFile();
+        }catch (IOException e) {}
+
+        Configuration config = new Configuration(newFile);
+
+        config.load();
+
+        allowToasts = config.get("General", "Allow Toasts", false).getBoolean(true);
+
+        config.save();
     }
 }

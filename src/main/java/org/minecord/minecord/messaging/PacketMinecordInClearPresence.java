@@ -1,8 +1,6 @@
 package org.minecord.minecord.messaging;
 
-import com.google.gson.*;
 import io.netty.buffer.ByteBuf;
-import net.arikia.dev.drpc.DiscordRichPresence;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -12,9 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.minecord.minecord.Minecord;
 import org.minecord.minecord.MinecordConfig;
-import org.minecord.minecord.MinecordToast;
-
-import java.nio.charset.Charset;
+import org.minecord.minecord.gui.GuiMinecordToast;
 
 @SideOnly(Side.CLIENT)
 public class PacketMinecordInClearPresence implements IMessage {
@@ -42,7 +38,7 @@ public class PacketMinecordInClearPresence implements IMessage {
             System.out.println("MINECORD|RP [" + message.getDiscriminator() + "] - Received Presence Clearance!");
 
             if(MinecordConfig.allowToasts)
-                Minecraft.getMinecraft().getToastGui().add(new MinecordToast(MinecordToast.Icons.YOU_WIN, new TextComponentString("Presence cleared!"), null));
+                Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.YOU_WIN, new TextComponentString("Presence cleared!"), null));
 
             Minecord.INSTANCE.discordUtil.clearPresence();
             return null;
