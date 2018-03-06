@@ -21,7 +21,6 @@ public class PacketMinecordInUpdatePresence implements IMessage {
 
     private DiscordRichPresence richPresence;
     private String jsonRaw;
-    private int discriminator;
 
     public PacketMinecordInUpdatePresence() {}
 
@@ -31,10 +30,6 @@ public class PacketMinecordInUpdatePresence implements IMessage {
 
     public String getJsonRaw() {
         return jsonRaw;
-    }
-
-    public int getDiscriminator() {
-        return discriminator;
     }
 
     @Override
@@ -95,7 +90,6 @@ public class PacketMinecordInUpdatePresence implements IMessage {
             presence.instance = json.get("instance").getAsBoolean() ? 1 : 0;
 
         richPresence = presence;
-        discriminator = Minecord.INSTANCE.packetHandler.getDiscriminator();
     }
 
     @Override
@@ -105,9 +99,11 @@ public class PacketMinecordInUpdatePresence implements IMessage {
 
         @Override
         public IMessage onMessage(PacketMinecordInUpdatePresence message, MessageContext ctx) {
-            System.out.println("MINECORD|RP [" + message.getDiscriminator() + "] - Received Presence Update! Raw Message: \"" + message.getJsonRaw() + "\"");
+            if(!Minecord.INSTANCE.isConnected)
+                return null;
+            System.out.println("MINECORD|RP - Received Presence Update! Raw Message: \"" + message.getJsonRaw() + "\"");
 
-            if(MinecordConfig.allowToasts)
+            if(MinecordConfig.general.allowToasts)
                 Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.YOU_WIN, new TextComponentString("Presence updated!"), null));
 
             Minecord.INSTANCE.discordUtil.updatePresence(message.getPresence());

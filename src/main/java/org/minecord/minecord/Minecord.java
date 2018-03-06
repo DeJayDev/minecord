@@ -1,23 +1,29 @@
 package org.minecord.minecord;
 
+import net.arikia.dev.drpc.DiscordRichPresence;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.minecord.minecord.discord.*;
-import org.minecord.minecord.gui.GuiHandler;
+import org.minecord.minecord.gui.GuiMinecordToast;
 import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
+import sun.text.resources.cldr.ml.FormatData_ml;
 
 import java.util.UUID;
 
@@ -29,13 +35,15 @@ public class Minecord {
     public static Minecord INSTANCE;
 
     public static final String MODID = "minecord";
-    public static final String VERSION = "0.1-ALPHA.0";
-    //public final UUID HYPIXELAPI = UUID.fromString("ca5a9eac-3456-4ffe-8482-4fa430498b97");
+    public static final String VERSION = "0.1";
+
+    public static UUID UUID;
 
     public PacketHandler packetHandler;
     public DiscordUtil discordUtil;
+    public DiscordRichPresence offlinePresence;
 
-    public static UUID UUID;
+    public boolean isConnected = false;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
@@ -49,21 +57,28 @@ public class Minecord {
         discordUtil.eventHandler.joinRequest = new JoinRequestEvent();
         discordUtil.eventHandler.spectateGame = new SpectateGameEvent();
         discordUtil.initializeDiscord();
+        discordUtil.runCallbackTask();
 
-        MinecordConfig.init(e.getModConfigurationDirectory());
+        ConfigManager.load(MODID, Config.Type.INSTANCE);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        MinecraftForge.EVENT_BUS.register(new Events()) ;
-        discordUtil.initializeDiscord();
-        NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
+        MinecraftForge.EVENT_BUS.register(new Events());
+        offlinePresence = discordUtil.assembleOfflinePresence();
     }
 
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent e){
-        discordUtil.initializeDiscord();
+    public void updateOfflinePresence(){
+        offlinePresence = discordUtil.assembleOfflinePresence();
+        discordUtil.updatePresence(offlinePresence);
+        System.out.println("Updated offline presence.");
+    }
+
+    public void disconnect(){
+        isConnected = false;
+        if(MinecordConfig.general.allowToasts)
+            Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Disconnected!"), new TextComponentString("Terminated by server.")));
     }
 
     public static class Events{
@@ -73,14 +88,28 @@ public class Minecord {
             if(!(e.getEntity() instanceof EntityPlayer))
                 return;
 
-            EntityPlayer p = (EntityPlayer)e.getEntity();
-            BlockPos pos = p.getPosition();
-
             UUID = e.getEntity().getUniqueID();
 
-            p.openGui(Minecord.INSTANCE, GuiHandler.ID_REGISTER_REQUEST, e.getWorld(), pos.getX(), pos.getY(), pos.getZ());
-
             Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(UUID, VERSION));
+            if(MinecordConfig.offline.offlinePresenceEnabled){
+                Minecord.INSTANCE.discordUtil.updatePresence(Minecord.INSTANCE.offlinePresence);
+                System.out.println("Setting offline presence.");
+            }
+        }
+
+        @SubscribeEvent
+        public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e) {
+            if (e.getModID().equals(Minecord.MODID)) {
+                ConfigManager.sync(Minecord.MODID, Config.Type.INSTANCE);
+            }
+        }
+
+        @SubscribeEvent
+        public static void postConfigChanged(ConfigChangedEvent.PostConfigChangedEvent e){
+            if(e.getModID().equals(Minecord.MODID)){
+                System.out.println("Updated offline presence.");
+                Minecord.INSTANCE.updateOfflinePresence();
+            }
         }
     }
 }

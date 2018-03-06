@@ -27,7 +27,6 @@ public class PacketMinecordOutEvent implements IMessage{
     public PacketMinecordOutEvent(@Nullable JsonObject payload, EventType type){
         this.type = type;
         json = new JsonObject();
-        json.addProperty("discriminator", Minecord.INSTANCE.packetHandler.getDiscriminator());
         json.addProperty("eventType", type.toString());
 
         if(payload != null)
@@ -36,7 +35,7 @@ public class PacketMinecordOutEvent implements IMessage{
 
     @Override
     public void toBytes(ByteBuf buf) {
-        if(MinecordConfig.allowToasts)
+        if(MinecordConfig.general.allowToasts)
             Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Event dispatched!"), new TextComponentString("Type: " + type.toString())));
         if(json != null)
             buf.writeBytes(json.toString().getBytes(Charset.forName("UTF-8")));

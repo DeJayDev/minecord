@@ -32,13 +32,10 @@ minecraft {
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 dependencies {
-    shade 'com.github.Vatuu:discord-rpc:1.0'
+    shade 'com.github.Vatuu:discord-rpc:1.1'
 }
 
 processResources {

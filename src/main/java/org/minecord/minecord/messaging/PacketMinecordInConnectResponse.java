@@ -32,7 +32,6 @@ public class PacketMinecordInConnectResponse implements IMessage {
         System.out.println("Message: " + message);
         JsonObject json = new JsonParser().parse(message).getAsJsonObject();
         success = json.get("success").getAsBoolean();
-        Minecord.INSTANCE.packetHandler.setDiscriminator(json.get("discriminator").getAsInt());
     }
 
     //NOT NEEDED; RECEIVE ONLY!
@@ -44,12 +43,13 @@ public class PacketMinecordInConnectResponse implements IMessage {
         @Override
         public IMessage onMessage(PacketMinecordInConnectResponse response, MessageContext ctx) {
             if(!response.success){
-                if(MinecordConfig.allowToasts)
+                if(MinecordConfig.general.allowToasts)
                 Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Connection failure!"), null));
             }else{
-                Minecord.INSTANCE.packetHandler.registerPresenceMessage();
-                if(MinecordConfig.allowToasts)
-                    Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Successfully connected!"), new TextComponentString("Discriminator: " + Minecord.INSTANCE.packetHandler.getDiscriminator())));
+                if(MinecordConfig.general.allowToasts)
+                    Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Successfully connected!"), null));
+                Minecord.INSTANCE.isConnected = true;
+                Minecord.INSTANCE.discordUtil.clearPresence();
             }
             return null;
         }

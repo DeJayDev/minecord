@@ -15,18 +15,8 @@ import org.minecord.minecord.gui.GuiMinecordToast;
 @SideOnly(Side.CLIENT)
 public class PacketMinecordInClearPresence implements IMessage {
 
-    private int discriminator;
-
-    public PacketMinecordInClearPresence() {}
-
-    public int getDiscriminator() {
-        return discriminator;
-    }
-
     @Override
-    public void fromBytes(ByteBuf buf) {
-        discriminator = Minecord.INSTANCE.packetHandler.getDiscriminator();
-    }
+    public void fromBytes(ByteBuf buf) {}
 
     @Override
     public void toBytes(ByteBuf buf){}
@@ -35,9 +25,11 @@ public class PacketMinecordInClearPresence implements IMessage {
 
         @Override
         public IMessage onMessage(PacketMinecordInClearPresence message, MessageContext ctx) {
-            System.out.println("MINECORD|RP [" + message.getDiscriminator() + "] - Received Presence Clearance!");
+            if(!Minecord.INSTANCE.isConnected)
+                return null;
+            System.out.println("MINECORD|RP - Received Presence Clearance!");
 
-            if(MinecordConfig.allowToasts)
+            if(MinecordConfig.general.allowToasts)
                 Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.YOU_WIN, new TextComponentString("Presence cleared!"), null));
 
             Minecord.INSTANCE.discordUtil.clearPresence();
