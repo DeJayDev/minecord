@@ -3,9 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Minecord.iml" filepath="$PROJECT_DIR$/Minecord.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Minecord_api.iml" filepath="$PROJECT_DIR$/.idea/modules/Minecord_api.iml" group="Minecord" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Minecord_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Minecord_main.iml" group="Minecord" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Minecord_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Minecord_test.iml" group="Minecord" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/minecord.iml" filepath="$PROJECT_DIR$/.idea/modules/minecord.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/minecord_api.iml" filepath="$PROJECT_DIR$/.idea/modules/minecord_api.iml" group="minecord" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/minecord_main.iml" filepath="$PROJECT_DIR$/.idea/modules/minecord_main.iml" group="minecord" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/minecord_test.iml" filepath="$PROJECT_DIR$/.idea/modules/minecord_test.iml" group="minecord" />
     </modules>
   </component>
 </project>
