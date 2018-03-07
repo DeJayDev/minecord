@@ -28,7 +28,6 @@ public class PacketMinecordInConnectResponse implements IMessage {
         byte[] messageBytes = new byte[buf.capacity()];
         buf.getBytes(0, messageBytes);
         String message = new String(messageBytes, Charset.forName("UTF-8"));
-        System.out.println("Message: " + message);
         JsonObject json = new JsonParser().parse(message).getAsJsonObject();
         success = json.get("success").getAsBoolean();
     }
@@ -50,6 +49,7 @@ public class PacketMinecordInConnectResponse implements IMessage {
                 Minecord.INSTANCE.isConnected = true;
                 Minecord.INSTANCE.discordUtil.clearPresence();
             }
+            System.out.println("Message: " + response.success);
             return null;
         }
     }

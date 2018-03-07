@@ -2,13 +2,13 @@
   {
     "modid": "minecord",
     "name": "Minecord",
-    "description": "'dis some rad Discord Minecraft Crossover!",
-    "version": "0.1-ALPHA.0",
-    "mcversion": "1.12.1",
+    "description": "Spice up your Minecraft with Discord's Rich Presence!",
+    "version": "1.0",
+    "mcversion": ["1.12", "1.12.1, 1.12.2"],
     "url": "https://minecord.org/",
     "updateUrl": "",
-    "authorList": ["Vatuu", "DeJay"],
-    "credits": "",
+    "authorList": ["Vatuu"],
+    "credits": "Special thanks to DeJay!",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []

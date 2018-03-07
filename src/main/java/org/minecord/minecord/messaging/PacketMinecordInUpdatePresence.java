@@ -41,53 +41,53 @@ public class PacketMinecordInUpdatePresence implements IMessage {
 
         DiscordRichPresence presence = new DiscordRichPresence();
         if (json.has("state"))
-            presence.state = json.get("state").getAsString();
+            presence.setState(json.get("state").getAsString());
         if (json.has("details"))
-            presence.details = json.get("details").getAsString();
+            presence.setDetails(json.get("details").getAsString());
         if (json.has("timestamps")) {
             JsonObject timestamps = json.getAsJsonObject("timestamps");
             if (timestamps.has("start"))
-                presence.startTimestamp = timestamps.get("start").getAsLong();
+                presence.setStartTimestamp(timestamps.get("start").getAsLong());
             if (timestamps.has("end"))
-                presence.startTimestamp = timestamps.get("end").getAsLong();
+                presence.setEndTimestamp(timestamps.get("end").getAsLong());
         }
         if (json.has("images")) {
             JsonObject images = json.getAsJsonObject("images");
             if (images.has("small")) {
                 JsonObject small = images.getAsJsonObject("small");
                 if (small.has("key"))
-                    presence.smallImageKey = small.get("key").getAsString();
+                    presence.setSmallImageKey(small.get("key").getAsString());
                 if (small.has("text"))
-                    presence.smallImageText = small.get("text").getAsString();
+                    presence.setSmallImageText(small.get("text").getAsString());
             }
             if (images.has("large")) {
                 JsonObject large = images.getAsJsonObject("large");
                 if (large.has("key"))
-                    presence.largeImageKey = large.get("key").getAsString();
+                    presence.setLargeImageKey(large.get("key").getAsString());
                 if (large.has("text"))
-                    presence.largeImageText = large.get("text").getAsString();
+                    presence.setLargeImageText(large.get("text").getAsString());
             }
         }
         if (json.has("party")) {
             JsonObject party = json.getAsJsonObject("party");
             if (party.has("id"))
-                presence.partyId = party.get("id").getAsString();
+                presence.setPartyId(party.get("id").getAsString());
             if (party.has("size"))
-                presence.partySize = party.get("size").getAsInt();
+                presence.setPartySize(party.get("size").getAsInt());
             if (party.has("max"))
-                presence.partyMax = party.get("max").getAsInt();
+                presence.setPartyMax(party.get("max").getAsInt());
         }
         if (json.has("secrets")) {
             JsonObject secrets = json.getAsJsonObject("secrets");
             if (secrets.has("match"))
-                presence.matchSecret = secrets.get("match").getAsString();
+                presence.setMatchSecret(secrets.get("match").getAsString());
             if (secrets.has("spectate"))
-                presence.spectateSecret = secrets.get("spectate").getAsString();
+                presence.setSpectateSecret(secrets.get("spectate").getAsString());
             if (secrets.has("join"))
-                presence.joinSecret = secrets.get("join").getAsString();
+                presence.setJoinSecret(secrets.get("join").getAsString());
         }
         if (json.has("instance"))
-            presence.instance = json.get("instance").getAsBoolean() ? 1 : 0;
+            presence.setInstance(json.get("instance").getAsBoolean() ? 1 : 0);
 
         richPresence = presence;
     }
