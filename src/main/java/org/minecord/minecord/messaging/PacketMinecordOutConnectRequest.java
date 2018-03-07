@@ -35,6 +35,9 @@ public class    PacketMinecordOutConnectRequest implements IMessage {
     public static class Handler implements IMessageHandler<PacketMinecordOutConnectRequest, IMessage>{
 
         @Override
-        public IMessage onMessage(PacketMinecordOutConnectRequest message, MessageContext ctx) { return null; }
+        public IMessage onMessage(PacketMinecordOutConnectRequest message, MessageContext ctx) {
+            System.out.println("Send connection request.");
+            return null;
+        }
     }
 }

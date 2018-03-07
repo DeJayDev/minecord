@@ -23,7 +23,6 @@ public class PacketMinecordInConnectResponse implements IMessage {
 
     public PacketMinecordInConnectResponse() {}
 
-
     @Override
     public void fromBytes(ByteBuf buf){
         byte[] messageBytes = new byte[buf.capacity()];

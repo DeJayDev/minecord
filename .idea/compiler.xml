@@ -6,7 +6,10 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="minecord_api" target="1.8" />
+      <module name="Minecord_api" target="1.8" />
       <module name="minecord_main" target="1.8" />
+      <module name="Minecord_main" target="1.8" />
+      <module name="Minecord_test" target="1.8" />
       <module name="minecord_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
