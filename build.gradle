@@ -29,13 +29,20 @@ minecraft {
     mappings = project.mcpVersion
 }
 
+
+
+reobfJar{
+        addExtraSrgLine('PK: org/apache/commons/lang org/minecord/apachelibs/lang')
+        addExtraSrgLine('PK: org/apache/commons/io org/minecord/apachelibs/io')
+}
+
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    shade 'com.github.Vatuu:discord-rpc:1.2'
+    shade 'com.github.Vatuu:discord-rpc:1.2.1'
 }
 
 processResources {

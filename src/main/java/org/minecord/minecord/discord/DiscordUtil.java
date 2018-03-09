@@ -55,11 +55,11 @@ public final class DiscordUtil {
 
     public DiscordRichPresence assembleOfflinePresence(){
         DiscordRichPresence p = new DiscordRichPresence();
-        p.setState(MinecordConfig.offline.offlineState);
-        p.setDetails(MinecordConfig.offline.offlineDetails);
-        p.setSmallImageKey(MinecordConfig.offline.offlineImageSmall.getKey());
-        p.setSmallImageText(MinecordConfig.offline.offlineImageSmallText);
-        p.setInstance(1);
+        p.state = MinecordConfig.offline.offlineState;
+        p.details = MinecordConfig.offline.offlineDetails;
+        p.smallImageKey = MinecordConfig.offline.offlineImageSmall.getKey();
+        p.smallImageText = MinecordConfig.offline.offlineImageSmallText;
+        p.instance = 1;
         return p;
     }
 
