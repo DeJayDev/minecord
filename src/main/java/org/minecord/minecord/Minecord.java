@@ -2,18 +2,18 @@ package org.minecord.minecord;
 
 import net.arikia.dev.drpc.DiscordRichPresence;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.minecord.minecord.discord.*;
@@ -35,11 +35,13 @@ public class Minecord {
 
     public static UUID UUID;
 
+    public boolean isConnected = false;
     public PacketHandler packetHandler;
     public DiscordUtil discordUtil;
-    public DiscordRichPresence offlinePresence;
+    public String connectedIp = "";
 
-    public boolean isConnected = false;
+
+    private DiscordRichPresence offlinePresence;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
@@ -62,35 +64,64 @@ public class Minecord {
     public void init(FMLInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new Events());
-        offlinePresence = discordUtil.assembleOfflinePresence();
+        offlinePresence = discordUtil.assembleOfflinePresence(false);
+        updateOfflinePresence(false);
     }
 
-    public void updateOfflinePresence(){
-        offlinePresence = discordUtil.assembleOfflinePresence();
-        discordUtil.updatePresence(offlinePresence);
-        System.out.println("Updated offline presence.");
+    public void updateOfflinePresence(boolean menu){
+        if(MinecordConfig.offline.offlinePresenceEnabled) {
+            offlinePresence = discordUtil.assembleOfflinePresence(menu);
+            discordUtil.updatePresence(offlinePresence);
+            System.out.println("Updated offline presence.");
+        }else{
+            System.out.println("Offline Presence was disabled in the config.");
+        }
     }
 
     public void disconnect(){
         isConnected = false;
         if(MinecordConfig.general.allowToasts)
             Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Disconnected!"), new TextComponentString("Terminated by server.")));
+        updateOfflinePresence(true);
     }
 
     public static class Events{
 
         @SubscribeEvent
-        public void loggedIn(EntityJoinWorldEvent e){
-            if(!(e.getEntity() instanceof EntityPlayer))
-                return;
-
-            UUID = e.getEntity().getUniqueID();
-
-            Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(UUID, VERSION));
-            if(MinecordConfig.offline.offlinePresenceEnabled){
-                Minecord.INSTANCE.discordUtil.updatePresence(Minecord.INSTANCE.offlinePresence);
-                System.out.println("Setting offline presence.");
+        public void joinedServer(FMLNetworkEvent.ClientConnectedToServerEvent e){
+            ServerData currentServer = Minecraft.getMinecraft().getCurrentServerData();
+            if(currentServer != null){
+                if(currentServer.serverIP != null){
+                    Minecord.INSTANCE.connectedIp = currentServer.serverIP;
+                }else{
+                    Minecord.INSTANCE.connectedIp = "";
+                }
+            }else{
+                Minecord.INSTANCE.connectedIp = "";
             }
+
+            Utils.runAsync(() -> {
+                while (Minecraft.getMinecraft().player == null) {
+                    try {
+                        Thread.sleep(100L);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                UUID = Minecraft.getMinecraft().player.getUniqueID();
+                Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(UUID, VERSION));
+            });
+
+            Minecord.INSTANCE.updateOfflinePresence(true);
+            //TODO Analytics
+        }
+
+        @SubscribeEvent
+        public void onPlayerLogOutEvent(FMLNetworkEvent.ClientDisconnectionFromServerEvent e) {
+            Minecord.INSTANCE.isConnected = false;
+            if(MinecordConfig.general.allowToasts)
+                Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Disconnected!"), new TextComponentString("Terminated by server.")));
+            Minecord.INSTANCE.updateOfflinePresence(false);
         }
 
         @SubscribeEvent
@@ -104,7 +135,7 @@ public class Minecord {
         public static void postConfigChanged(ConfigChangedEvent.PostConfigChangedEvent e){
             if(e.getModID().equals(Minecord.MODID)){
                 System.out.println("Updated offline presence.");
-                Minecord.INSTANCE.updateOfflinePresence();
+                Minecord.INSTANCE.updateOfflinePresence(true);
             }
         }
     }

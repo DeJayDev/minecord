@@ -15,8 +15,9 @@ public class PacketMinecordInDisconnect implements IMessage {
     public static class Handler implements IMessageHandler<PacketMinecordInDisconnect, IMessage>{
 
         public IMessage onMessage(PacketMinecordInDisconnect message, MessageContext ctx) {
-            if(Minecord.INSTANCE.isConnected)
+            if (Minecord.INSTANCE.isConnected) {
                 Minecord.INSTANCE.disconnect();
+            }
             return null;
         }
     }

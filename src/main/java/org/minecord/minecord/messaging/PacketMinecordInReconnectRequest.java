@@ -21,10 +21,6 @@ public class PacketMinecordInReconnectRequest implements IMessage{
                Minecord.INSTANCE.disconnect();
 
             Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(Minecord.UUID, Minecord.VERSION));
-            if(MinecordConfig.offline.offlinePresenceEnabled){
-                Minecord.INSTANCE.discordUtil.updatePresence(Minecord.INSTANCE.offlinePresence);
-                System.out.println("Setting offline presence.");
-            }
             return null;
         }
     }
