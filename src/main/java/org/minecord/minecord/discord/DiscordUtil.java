@@ -4,9 +4,9 @@ import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import org.minecord.minecord.Minecord;
-import org.minecord.minecord.MinecordConfig;
 import org.minecord.minecord.ServerEnum;
-import org.minecord.minecord.Utils;
+import org.minecord.minecord.config.OfflinePresenceConfig;
+import org.minecord.minecord.utils.Multithreading;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,10 +37,10 @@ public final class DiscordUtil {
 
     public DiscordRichPresence assembleOfflinePresence(boolean ingame){
         DiscordRichPresence p = new DiscordRichPresence();
-        p.state = MinecordConfig.offline.offlineState;
-        p.largeImageText = MinecordConfig.offline.getOfflineImageLargeText;
-        p.smallImageKey = MinecordConfig.offline.offlineImageSmall.getKey();
-        p.smallImageText = MinecordConfig.offline.offlineImageSmallText;
+        p.state = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getState();
+        p.largeImageText = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageLargeText();
+        p.smallImageKey = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageSmall().getKey();
+        p.smallImageText = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageSmallText();
         p.instance = 1;
 
         ServerEnum connectedServer = ServerEnum.DEFAULT;
@@ -56,24 +56,23 @@ public final class DiscordUtil {
         }
 
 
-        String details = MinecordConfig.offline.offlineDetails;
+        String details = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getDetails();
         p.details = details.contains("%ip") ? (connectedServer == ServerEnum.DEFAULT ? details.replace("%ip", ip) : details.replace("%ip", connectedServer.getName())) : details;
-        MinecordConfig.OfflineImagesLarge large = MinecordConfig.offline.offlineImageLarge;
-        p.largeImageKey = large == MinecordConfig.OfflineImagesLarge.SET_BY_IP ? connectedServer.getKey() : large.getKey();
+        OfflinePresenceConfig.OfflineImagesLarge large = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageLarge();
+        p.largeImageKey = large == OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP ? connectedServer.getKey() : large.getKey();
 
 
         if(!ingame){
             p.details = details.contains("%ip") ? details.replace("%ip", "the Main Menu") : details;
-            p.largeImageKey = large == MinecordConfig.OfflineImagesLarge.SET_BY_IP ? MinecordConfig.OfflineImagesLarge.GRASS.getKey() : large.getKey();
+            p.largeImageKey = large == OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP ? OfflinePresenceConfig.OfflineImagesLarge.GRASS.getKey() : large.getKey();
         }
 
         return p;
     }
 
     public void runCallbackTask(){
-        Utils.schedule(() -> {
+        Multithreading.schedule(() -> {
             DiscordRPC.discordRunCallbacks();
-            System.out.println("RAN CALLBACK!");
             }, 0L, 500L, TimeUnit.MILLISECONDS);
     }
 }

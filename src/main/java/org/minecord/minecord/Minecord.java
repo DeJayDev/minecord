@@ -3,24 +3,38 @@ package org.minecord.minecord;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+import org.minecord.minecord.config.ConfigHandler;
 import org.minecord.minecord.discord.*;
+import org.minecord.minecord.gui.GuiMinecordConfigGeneral;
+import org.minecord.minecord.gui.GuiMinecordConfigPresence;
 import org.minecord.minecord.gui.GuiMinecordToast;
 import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
+import org.minecord.minecord.utils.CapeUtil;
+import org.minecord.minecord.utils.Multithreading;
+import scala.collection.parallel.ParIterableLike;
 
+import javax.swing.text.JTextComponent;
+import java.io.File;
 import java.util.UUID;
 
 @SideOnly(Side.CLIENT)
@@ -42,6 +56,11 @@ public class Minecord {
 
 
     private DiscordRichPresence offlinePresence;
+    private ConfigHandler config;
+
+    public ConfigHandler getConfigHandler(){
+        return config;
+    }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
@@ -57,7 +76,7 @@ public class Minecord {
         discordUtil.initializeDiscord();
         discordUtil.runCallbackTask();
 
-        ConfigManager.load(MODID, Config.Type.INSTANCE);
+        config = new ConfigHandler(new File(e.getModConfigurationDirectory(), "Minecord.json"));
     }
 
     @EventHandler
@@ -66,11 +85,26 @@ public class Minecord {
         MinecraftForge.EVENT_BUS.register(new Events());
         offlinePresence = discordUtil.assembleOfflinePresence(false);
         updateOfflinePresence(false);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+            @Override
+            public void run() {
+                System.out.println("Finalizing ConfigHandler. Saving contents to '" + Minecord.INSTANCE.getConfigHandler().getConfigFile().getName() + "'.");
+                Minecord.INSTANCE.getConfigHandler().serialize();
+            }
+        });
+
+        KeyBindings.init();
     }
 
-    public void updateOfflinePresence(boolean menu){
-        if(MinecordConfig.offline.offlinePresenceEnabled) {
-            offlinePresence = discordUtil.assembleOfflinePresence(menu);
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event){
+        checkCosmetics();
+    }
+
+    public void updateOfflinePresence(boolean ingame){
+        if(config.getGeneral().isEnableToasts()) {
+            offlinePresence = discordUtil.assembleOfflinePresence(ingame);
             discordUtil.updatePresence(offlinePresence);
             System.out.println("Updated offline presence.");
         }else{
@@ -80,9 +114,17 @@ public class Minecord {
 
     public void disconnect(){
         isConnected = false;
-        if(MinecordConfig.general.allowToasts)
+        if(config.getGeneral().isEnableToasts())
             Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Disconnected!"), new TextComponentString("Terminated by server.")));
         updateOfflinePresence(true);
+    }
+
+    private void checkCosmetics(){
+        Minecraft.getMinecraft().gameSettings.setModelPartEnabled(EnumPlayerModelParts.CAPE, true);
+        Minecraft.getMinecraft().getRenderManager().getSkinMap().forEach((s, p) -> {
+            System.out.println(s);
+            p.addLayer(new CapeUtil(p, CapeUtil.Players.VATUU));
+        });
     }
 
     public static class Events{
@@ -100,7 +142,7 @@ public class Minecord {
                 Minecord.INSTANCE.connectedIp = "";
             }
 
-            Utils.runAsync(() -> {
+            Multithreading.runAsync(() -> {
                 while (Minecraft.getMinecraft().player == null) {
                     try {
                         Thread.sleep(100L);
@@ -119,7 +161,7 @@ public class Minecord {
         @SubscribeEvent
         public void onPlayerLogOutEvent(FMLNetworkEvent.ClientDisconnectionFromServerEvent e) {
             Minecord.INSTANCE.isConnected = false;
-            if(MinecordConfig.general.allowToasts)
+            if(Minecord.INSTANCE.config.getGeneral().isEnableToasts())
                 Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Disconnected!"), new TextComponentString("Terminated by server.")));
             Minecord.INSTANCE.updateOfflinePresence(false);
         }
@@ -137,6 +179,22 @@ public class Minecord {
                 System.out.println("Updated offline presence.");
                 Minecord.INSTANCE.updateOfflinePresence(true);
             }
+        }
+
+        @SubscribeEvent
+        public void onKeyInput(InputEvent.KeyInputEvent e){
+            if(KeyBindings.openMinecordConfig.isPressed()){
+                Minecraft.getMinecraft().displayGuiScreen(new GuiMinecordConfigPresence());
+            }
+        }
+    }
+
+    public static class KeyBindings{
+        public static KeyBinding openMinecordConfig;
+
+        public static void init(){
+            openMinecordConfig = new KeyBinding("Open Minecord Config", Keyboard.KEY_M, "key.categories.general");
+            ClientRegistry.registerKeyBinding(openMinecordConfig);
         }
     }
 }

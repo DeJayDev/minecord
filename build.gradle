@@ -32,8 +32,8 @@ minecraft {
 
 
 reobfJar{
-        addExtraSrgLine('PK: org/apache/commons/lang org/minecord/apachelibs/lang')
-        addExtraSrgLine('PK: org/apache/commons/io org/minecord/apachelibs/io')
+        addExtraSrgLine('PK: org/apache/commons/lang org/minecord/libs/lang')
+        addExtraSrgLine('PK: org/apache/commons/io org/minecord/libs/io')
 }
 
 repositories {
@@ -50,7 +50,7 @@ processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
+    // replace utils in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include "mcmod.info"
 

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.minecord.minecord.Minecord;
-import org.minecord.minecord.MinecordConfig;
+import org.minecord.minecord.config.GeneralConfig;
 import org.minecord.minecord.gui.GuiMinecordToast;
 
 import java.nio.charset.Charset;
@@ -103,7 +103,7 @@ public class PacketMinecordInUpdatePresence implements IMessage {
                 return null;
             System.out.println("MINECORD|RP - Received Presence Update! Raw Message: \"" + message.getJsonRaw() + "\"");
 
-            if(MinecordConfig.general.allowToasts)
+            if(Minecord.INSTANCE.getConfigHandler().getGeneral().isEnableToasts())
                 Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.YOU_WIN, new TextComponentString("Presence updated!"), null));
 
             Minecord.INSTANCE.discordUtil.updatePresence(message.getPresence());

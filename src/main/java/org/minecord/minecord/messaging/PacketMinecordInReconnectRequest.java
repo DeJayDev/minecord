@@ -5,7 +5,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import org.minecord.minecord.Minecord;
-import org.minecord.minecord.MinecordConfig;
 
 public class PacketMinecordInReconnectRequest implements IMessage{
 

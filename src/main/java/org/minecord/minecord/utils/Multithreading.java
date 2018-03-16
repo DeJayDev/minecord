@@ -1,4 +1,4 @@
-package org.minecord.minecord;
+package org.minecord.minecord.utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -6,7 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Utils {
+public class Multithreading {
 
     private static AtomicInteger counter = new AtomicInteger(0);
     private static ExecutorService POOL = Executors.newFixedThreadPool(8, r -> new Thread(r, String.format("Thread %s", counter.incrementAndGet())));
