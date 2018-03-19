@@ -35,7 +35,7 @@ public class PacketMinecordOutEvent implements IMessage{
 
     @Override
     public void toBytes(ByteBuf buf) {
-        if(Minecord.INSTANCE.getConfigHandler().getGeneral().isEnableToasts())
+        if(Minecord.INSTANCE.config.getGeneral().isEnableToasts())
             Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Event dispatched!"), new TextComponentString("Type: " + type.toString())));
         if(json != null)
             buf.writeBytes(json.toString().getBytes(Charset.forName("UTF-8")));

@@ -74,25 +74,44 @@ public class OfflinePresenceConfig {
 
     @SuppressWarnings("unused")
     public enum OfflineImagesSmall{
-        COMMAND_BLOCK("command_block"),
-        CRAFTING_TABLE("crafting_table_front"),
-        DIAMOND("diamond"),
-        DIAMOND_SWORD("diamond_sword"),
-        REDSTONE("redstone_dust"),
-        ENDER_EYE("ender_eye"),
-        TNT("tnt"),
-        RED("concrete_red"),
-        YELLOW("concrete_yellow"),
-        GREEN("concrete_yellow");
+        COMMAND_BLOCK("command_block", "Command Block"),
+        CRAFTING_TABLE("crafting_table_front", "Crafting Table"),
+        DIAMOND("diamond", "Diamond"),
+        DIAMOND_SWORD("diamond_sword", "Diamond Sword"),
+        REDSTONE("redstone_dust", "Redstone Dust"),
+        ENDER_EYE("ender_eye", "Ender Eye"),
+        TNT("tnt", "TNT"),
+        RED("concrete_red", "Red"),
+        YELLOW("concrete_yellow", "Yellow"),
+        GREEN("concrete_green", "Green");
 
         private final String key;
+        private final String readable;
 
-        OfflineImagesSmall(String key){
+        OfflineImagesSmall(String key, String readable){
             this.key = key;
+            this.readable = readable;
         }
 
         public String getKey() {
             return key;
+        }
+
+        public String getReadable() {
+            return readable;
+        }
+
+        public static OfflineImagesSmall getNext(OfflineImagesSmall se) {
+            int index = 0;
+            for(int i = 0; i < values().length; i++) {
+                if(values()[i] == se) {
+                    index = i;
+                    break;
+                }
+            }
+            if(index + 1 < values().length)
+                return values()[index + 1];
+            return values()[0];
         }
     }
 
@@ -125,6 +144,19 @@ public class OfflinePresenceConfig {
 
         public String getReadable() {
             return readable;
+        }
+
+        public static OfflineImagesLarge getNext(OfflineImagesLarge se) {
+            int index = 0;
+            for(int i = 0; i < values().length; i++) {
+                if(values()[i] == se) {
+                    index = i;
+                    break;
+                }
+            }
+            if(index + 1 < values().length)
+                return values()[index + 1];
+            return values()[0];
         }
     }
 }

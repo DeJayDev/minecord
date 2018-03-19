@@ -25,11 +25,11 @@ public class PacketMinecordInClearPresence implements IMessage {
 
         @Override
         public IMessage onMessage(PacketMinecordInClearPresence message, MessageContext ctx) {
-            if(!Minecord.INSTANCE.isConnected)
+            if(!Minecord.INSTANCE.connection.checkConnectionServer())
                 return null;
             System.out.println("MINECORD|RP - Received Presence Clearance!");
 
-            if(Minecord.INSTANCE.getConfigHandler().getGeneral().isEnableToasts())
+            if(Minecord.INSTANCE.config.getGeneral().isEnableToasts())
                 Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.YOU_WIN, new TextComponentString("Presence cleared!"), null));
 
             Minecord.INSTANCE.discordUtil.clearPresence();

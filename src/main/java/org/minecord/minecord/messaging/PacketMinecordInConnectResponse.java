@@ -41,12 +41,12 @@ public class PacketMinecordInConnectResponse implements IMessage {
         @Override
         public IMessage onMessage(PacketMinecordInConnectResponse response, MessageContext ctx) {
             if(!response.success){
-                if(Minecord.INSTANCE.getConfigHandler().getGeneral().isEnableToasts())
+                if(Minecord.INSTANCE.config.getGeneral().isEnableToasts())
                 Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_FAILURE, new TextComponentString("Connection failure!"), null));
             }else{
-                if(Minecord.INSTANCE.getConfigHandler().getGeneral().isEnableToasts())
+                if(Minecord.INSTANCE.config.getGeneral().isEnableToasts())
                     Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.CONNECT_SUCCESS, new TextComponentString("Successfully connected!"), null));
-                Minecord.INSTANCE.isConnected = true;
+                Minecord.INSTANCE.connection.setConnected(true);
                 Minecord.INSTANCE.discordUtil.clearPresence();
             }
             System.out.println("Message: " + response.success);

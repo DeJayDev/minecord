@@ -99,11 +99,11 @@ public class PacketMinecordInUpdatePresence implements IMessage {
 
         @Override
         public IMessage onMessage(PacketMinecordInUpdatePresence message, MessageContext ctx) {
-            if(!Minecord.INSTANCE.isConnected)
+            if(!Minecord.INSTANCE.connection.checkConnectionServer())
                 return null;
             System.out.println("MINECORD|RP - Received Presence Update! Raw Message: \"" + message.getJsonRaw() + "\"");
 
-            if(Minecord.INSTANCE.getConfigHandler().getGeneral().isEnableToasts())
+            if(Minecord.INSTANCE.config.getGeneral().isEnableToasts())
                 Minecraft.getMinecraft().getToastGui().add(new GuiMinecordToast(GuiMinecordToast.Icons.YOU_WIN, new TextComponentString("Presence updated!"), null));
 
             Minecord.INSTANCE.discordUtil.updatePresence(message.getPresence());

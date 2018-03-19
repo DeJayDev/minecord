@@ -32,7 +32,7 @@ public class PacketHandler {
     }
 
     public void sendEventMessage(PacketMinecordOutEvent packet) {
-        if(Minecord.INSTANCE.isConnected)
+        if(Minecord.INSTANCE.connection.checkConnectionServer())
             CHANNEL_EVENT.sendToServer(packet);
     }
 }
