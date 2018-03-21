@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 @SideOnly(Side.CLIENT)
 public class GuiMinecordToast implements IToast{
 
-    private final ResourceLocation TEXTURE_TOASTS = new ResourceLocation("minecord:textures/gui/toasts.png");
+    public static final ResourceLocation TEXTURE_TOASTS = new ResourceLocation("minecord:textures/gui/toasts.png");
 
     private Icons icon;
     private String title;

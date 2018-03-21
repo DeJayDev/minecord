@@ -17,6 +17,7 @@ public class DisconnectedEvent implements DisconnectedCallback {
         payload.addProperty("errorMessage", message);
         PacketMinecordOutEvent packet = new PacketMinecordOutEvent(payload, PacketMinecordOutEvent.EventType.DISCONNECTED_EVENT);
         Minecord.INSTANCE.packetHandler.sendEventMessage(packet);
+        Minecord.INSTANCE.connection.setDiscord(false);
         System.out.println("DisconnectedEvent was fired, message dispatched. Message: " + packet.getJson().toString());
     }
 }

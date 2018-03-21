@@ -13,6 +13,7 @@ public class ReadyEvent implements ReadyCallback {
     public void apply(){
         PacketMinecordOutEvent packet = new PacketMinecordOutEvent(null, PacketMinecordOutEvent.EventType.READY_EVENT);
         Minecord.INSTANCE.packetHandler.sendEventMessage(packet);
+        Minecord.INSTANCE.connection.setDiscord(true);
         System.out.println("ReadyEvent was fired, message dispatched. Message: " + packet.getJson().toString());
     }
 }

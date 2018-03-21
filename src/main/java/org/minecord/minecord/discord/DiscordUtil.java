@@ -18,6 +18,14 @@ public final class DiscordUtil {
 
     public DiscordUtil(){
         eventHandler = new DiscordEventHandlers();
+        eventHandler.ready = new ReadyEvent();
+        eventHandler.disconnected = new DisconnectedEvent();
+        eventHandler.errored = new ErroredEvent();
+        eventHandler.joinGame = new JoinGameEvent();
+        eventHandler.joinRequest = new JoinRequestEvent();
+        eventHandler.spectateGame = new SpectateGameEvent();
+        initializeDiscord();
+        runCallbackTask();
     }
 
     public void initializeDiscord(){
@@ -37,14 +45,14 @@ public final class DiscordUtil {
 
     public DiscordRichPresence assembleOfflinePresence(boolean ingame){
         DiscordRichPresence p = new DiscordRichPresence();
-        p.state = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getState();
-        p.largeImageText = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageLargeText();
-        p.smallImageKey = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageSmall().getKey();
-        p.smallImageText = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageSmallText();
+        p.state = Minecord.INSTANCE.config.getOfflinePresence().getState();
+        p.largeImageText = Minecord.INSTANCE.config.getOfflinePresence().getImageLargeText();
+        p.smallImageKey = Minecord.INSTANCE.config.getOfflinePresence().getImageSmall().getKey();
+        p.smallImageText = Minecord.INSTANCE.config.getOfflinePresence().getImageSmallText();
         p.instance = 1;
 
         ServerEnum connectedServer = ServerEnum.DEFAULT;
-        String ip = Minecord.INSTANCE.connectedIp;
+        String ip = Minecord.INSTANCE.connection.getConnectedIp();
         if(ip.contains("hive")){
             connectedServer = ServerEnum.HIVE;
         }else if(ip.contains("hypixel")){
@@ -56,9 +64,9 @@ public final class DiscordUtil {
         }
 
 
-        String details = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getDetails();
+        String details = Minecord.INSTANCE.config.getOfflinePresence().getDetails();
         p.details = details.contains("%ip") ? (connectedServer == ServerEnum.DEFAULT ? details.replace("%ip", ip) : details.replace("%ip", connectedServer.getName())) : details;
-        OfflinePresenceConfig.OfflineImagesLarge large = Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageLarge();
+        OfflinePresenceConfig.OfflineImagesLarge large = Minecord.INSTANCE.config.getOfflinePresence().getImageLarge();
         p.largeImageKey = large == OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP ? connectedServer.getKey() : large.getKey();
 
 

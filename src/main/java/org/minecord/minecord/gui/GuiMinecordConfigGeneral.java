@@ -18,7 +18,7 @@ public class GuiMinecordConfigGeneral extends GuiScreen {
         GuiTextField text = new GuiTextField(2, this.fontRenderer, this.width / 2 - 100, 60, 200, 20);
         text.drawTextBox();
         text.setFocused(true);
-        text.setText(Minecord.INSTANCE.getConfigHandler().getOfflinePresence().getImageLargeText());
+        text.setText(Minecord.INSTANCE.config.getOfflinePresence().getImageLargeText());
     }
 
     @Override
@@ -43,8 +43,8 @@ public class GuiMinecordConfigGeneral extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        if(!Minecord.INSTANCE.isConnected && Minecord.INSTANCE.getConfigHandler().getGeneral().isEnableOfflinePresence()){
-            Minecord.INSTANCE.updateOfflinePresence(false);
+        if(!Minecord.INSTANCE.connection.checkConnectionServer() && Minecord.INSTANCE.config.getGeneral().isEnableOfflinePresence()){
+            Minecord.INSTANCE.connection.updateOfflinePresence(false);
         }
     }
 

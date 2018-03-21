@@ -16,10 +16,10 @@ public class PacketMinecordInReconnectRequest implements IMessage{
 
         @Override
         public IMessage onMessage(PacketMinecordInReconnectRequest message, MessageContext ctx) {
-            if(Minecord.INSTANCE.isConnected)
-               Minecord.INSTANCE.disconnect();
+            if(Minecord.INSTANCE.connection.checkConnectionServer())
+               Minecord.INSTANCE.connection.disconnect();
 
-            Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(Minecord.UUID, Minecord.VERSION));
+            Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(Minecord.INSTANCE.profile.getUuid(), Minecord.VERSION));
             return null;
         }
     }
