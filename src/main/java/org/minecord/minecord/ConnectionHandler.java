@@ -47,7 +47,7 @@ public class ConnectionHandler{
 
     public void updateOfflinePresence(boolean ingame){
         if(Minecord.INSTANCE.config.getGeneral().isEnableToasts()) {
-            offlinePresence = Minecord.INSTANCE.discordUtil.assembleOfflinePresence(ingame);
+            offlinePresence = Minecord.INSTANCE.presenceHandler.assembleOfflinePresence(ingame);
             Minecord.INSTANCE.discordUtil.updatePresence(offlinePresence);
             System.out.println("Updated offline presence.");
         }else{

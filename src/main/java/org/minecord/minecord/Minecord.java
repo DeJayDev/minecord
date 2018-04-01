@@ -25,6 +25,7 @@ import org.minecord.minecord.gui.GuiMinecordConfigPresence;
 import org.minecord.minecord.gui.GuiMinecordToast;
 import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
+import org.minecord.minecord.offline.OfflinePresenceHandler;
 import org.minecord.minecord.utils.CapeUtil;
 import org.minecord.minecord.utils.Multithreading;
 
@@ -45,12 +46,14 @@ public class Minecord {
     public PacketHandler packetHandler;
     public ConfigHandler config;
     public DiscordUtil discordUtil;
+    public OfflinePresenceHandler presenceHandler;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
         connection = new ConnectionHandler();
         packetHandler = new PacketHandler();
         discordUtil = new DiscordUtil();
+        presenceHandler = new OfflinePresenceHandler();
         config = new ConfigHandler(new File(e.getModConfigurationDirectory(), "Minecord.json"));
     }
 
@@ -58,7 +61,7 @@ public class Minecord {
     public void init(FMLInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new Events());
-        connection.setOfflinePresence(discordUtil.assembleOfflinePresence(false));
+        connection.setOfflinePresence(presenceHandler.assembleOfflinePresence(false));
         connection.updateOfflinePresence(false);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
