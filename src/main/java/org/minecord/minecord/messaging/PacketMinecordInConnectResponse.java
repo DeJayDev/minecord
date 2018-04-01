@@ -30,6 +30,7 @@ public class PacketMinecordInConnectResponse implements IMessage {
         String message = new String(messageBytes, Charset.forName("UTF-8"));
         JsonObject json = new JsonParser().parse(message).getAsJsonObject();
         success = json.get("success").getAsBoolean();
+        System.out.println("Connect Response get");
     }
 
     //NOT NEEDED; RECEIVE ONLY!

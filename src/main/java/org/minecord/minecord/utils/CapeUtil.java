@@ -88,22 +88,22 @@ public class CapeUtil implements LayerRenderer<AbstractClientPlayer> {
     }
 
     public enum Players{
-        VATUU(new ResourceLocation("minecord:textures/gui/cape_dev.png"), "275df345c3c547689af8440d9cdf593e"),
-        DEJAYDEV(new ResourceLocation("minecord:textures/gui/cape_dev.png"), "9f15bf3896dd4d0cba3bcc6e447402ec"),
-        LH_KEITH(new ResourceLocation("minecord:textures/gui/cape_dev.png"), "8d96a41c7c03423f93e4c490a198b45c");
+        VATUU(Resources.CAPE_MOJANG, "275df345c3c547689af8440d9cdf593e"),
+        DEJAYDEV(Resources.CAPE_DEV, "9f15bf3896dd4d0cba3bcc6e447402ec"),
+        LH_KEITH(Resources.CAPE_DEV, "8d96a41c7c03423f93e4c490a198b45c");
 
-        private final ResourceLocation cape;
+        private final Resources resources;
         private final String uuid;
 
         private final List<String> validPlayers = Arrays.asList("275df345c3c547689af8440d9cdf593e", "9f15bf3896dd4d0cba3bcc6e447402ec", "8d96a41c7c03423f93e4c490a198b45c");
 
-        Players(ResourceLocation cape, String uuid){
-            this.cape = cape;
+        Players(Resources cape, String uuid){
+            this.resources = cape;
             this.uuid = uuid;
         }
 
         public ResourceLocation getCape() {
-            return cape;
+            return resources.getResource();
         }
 
         public Players getIfValid(String uuid){

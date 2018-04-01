@@ -20,6 +20,7 @@ public class    PacketMinecordOutConnectRequest implements IMessage {
         json.addProperty("version", version);
         json.addProperty("uuid", uuid.toString());
         text = json.toString();
+        System.out.println("Send connection request.");
     }
 
     //NOT NEEDED; OUT ONLY!
@@ -36,7 +37,6 @@ public class    PacketMinecordOutConnectRequest implements IMessage {
 
         @Override
         public IMessage onMessage(PacketMinecordOutConnectRequest message, MessageContext ctx) {
-            System.out.println("Send connection request.");
             return null;
         }
     }

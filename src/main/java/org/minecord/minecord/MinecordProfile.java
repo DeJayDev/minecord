@@ -3,6 +3,7 @@ package org.minecord.minecord;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public final class MinecordProfile {
     //Minecord Stuff
     private boolean isRegistered;
     private final boolean isDonator;
-    private Map<Cosmetics, Boolean> cosmetics;
+    private Map<Cosmetics, Boolean> cosmetics = new HashMap<>();
 
     public static MinecordProfile create(UUID uuid){
         return new MinecordProfile(uuid);
@@ -29,7 +30,8 @@ public final class MinecordProfile {
 
     private MinecordProfile(UUID uuid){
         this.uuid = uuid;
-        this.displayName = Minecraft.getMinecraft().player.getName();
+        this.displayName = Minecraft.getMinecraft().getSession().getUsername();
+        System.out.println(uuid + " | " + displayName);
 
         /*TODO FETCH DATABASE ENTRY
           -------------------------

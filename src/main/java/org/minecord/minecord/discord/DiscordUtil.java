@@ -49,7 +49,7 @@ public final class DiscordUtil {
         p.largeImageText = Minecord.INSTANCE.config.getOfflinePresence().getImageLargeText();
         p.smallImageKey = Minecord.INSTANCE.config.getOfflinePresence().getImageSmall().getKey();
         p.smallImageText = Minecord.INSTANCE.config.getOfflinePresence().getImageSmallText();
-        p.instance = 1;
+        //p.instance = 1;
 
         ServerEnum connectedServer = ServerEnum.DEFAULT;
         String ip = Minecord.INSTANCE.connection.getConnectedIp();
@@ -79,8 +79,6 @@ public final class DiscordUtil {
     }
 
     public void runCallbackTask(){
-        Multithreading.schedule(() -> {
-            DiscordRPC.discordRunCallbacks();
-            }, 0L, 500L, TimeUnit.MILLISECONDS);
+        Multithreading.schedule(() -> DiscordRPC.discordRunCallbacks(), 0L, 500L, TimeUnit.MILLISECONDS);
     }
 }

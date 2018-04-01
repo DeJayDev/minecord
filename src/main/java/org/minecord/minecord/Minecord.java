@@ -2,6 +2,7 @@ package org.minecord.minecord;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.text.TextComponentString;
@@ -20,8 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.minecord.minecord.config.ConfigHandler;
 import org.minecord.minecord.discord.*;
-import org.minecord.minecord.gui.GuiMinecordConfigGeneral;
-import org.minecord.minecord.gui.GuiMinecordConfigPresence;
+import org.minecord.minecord.gui.GuiMinecordConfig;
 import org.minecord.minecord.gui.GuiMinecordToast;
 import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
@@ -67,6 +67,7 @@ public class Minecord {
         }));
 
         KeyBindings.init();
+        profile = MinecordProfile.create(Minecraft.getMinecraft().getSession().getProfile().getId());
     }
 
     @EventHandler
@@ -97,18 +98,7 @@ public class Minecord {
                 Minecord.INSTANCE.connection.setConnectedIp("");
             }
 
-            Multithreading.runAsync(() -> {
-                while (Minecraft.getMinecraft().player == null) {
-                    try {
-                        Thread.sleep(100L);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                Minecord.INSTANCE.profile = MinecordProfile.create(Minecraft.getMinecraft().player.getUniqueID());
-                Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(Minecord.INSTANCE.profile.getUuid(), VERSION));
-            });
-
+            Minecord.INSTANCE.packetHandler.sendInitMessage(new PacketMinecordOutConnectRequest(Minecord.INSTANCE.profile.getUuid(), VERSION));
             Minecord.INSTANCE.connection.updateOfflinePresence(true);
             //TODO Analytics
         }
@@ -124,9 +114,9 @@ public class Minecord {
         @SubscribeEvent
         public void onKeyInput(InputEvent.KeyInputEvent e){
             if(KeyBindings.openMinecordConfig.isPressed()){
-                Minecraft.getMinecraft().displayGuiScreen(new GuiMinecordConfigPresence(null));
-            }else if(KeyBindings.openMinecordRegister.isPressed()){
-                Minecraft.getMinecraft().displayGuiScreen(new GuiMinecordConfigGeneral());
+                Minecraft.getMinecraft().displayGuiScreen(new GuiMinecordConfig(null));
+            /*}else if(KeyBindings.openMinecordRegister.isPressed()){
+                Minecraft.getMinecraft().displayGuiScreen(new GuiMinecordConfigGeneral(null));*/
             }
         }
     }
@@ -137,11 +127,9 @@ public class Minecord {
         public static KeyBinding openMinecordRegister;
 
         public static void init(){
-            openMinecordConfig = new KeyBinding("Open Minecord Config", Keyboard.KEY_M, "Minecord");
-            openMinecordRegister = new KeyBinding("Open Minecord Registration", Keyboard.KEY_N, "Minecord");
+            openMinecordConfig = new KeyBinding("Open Minecord Config", Keyboard.KEY_M, I18n.format("key.categories.minecord"));
 
             ClientRegistry.registerKeyBinding(openMinecordConfig);
-            ClientRegistry.registerKeyBinding(openMinecordRegister);
         }
     }
 }

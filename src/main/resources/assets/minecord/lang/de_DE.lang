@@ -1,0 +1,18 @@
+key.categories.minecord=Minecord Tastenbelegung
+
+config.menu.title=Minecord Einstellung
+config.menu.general=Allgemein
+config.menu.presence=Offline Presence
+config.general.title=Allgemeine Einstellungen
+config.general.server=Erlaube Server Verbindungen:
+config.general.offline=Erlaube Offline Presence:
+config.general.toasts=Erlaube Toast Nachrichten:
+config.general.analytics=Deaktiviere Analytics:
+config.presence.title=Offline Presence Einstellungen
+config.presence.details=Presence Details:
+config.presence.state=Presence Status:
+config.presence.large=Großes Bild:
+config.presence.large.text=Großer Bild Text:
+config.presence.small=Kleines Bild:
+config.presence.small.text=Kleiner Bild Text:
+config.presence.byip=Setze Presence nach IP:

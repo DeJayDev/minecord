@@ -1,10 +1,10 @@
 package org.minecord.minecord.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
 import org.minecord.minecord.Minecord;
 import org.minecord.minecord.config.OfflinePresenceConfig;
@@ -18,7 +18,7 @@ public class GuiMinecordConfigPresence extends GuiScreen {
     private GuiButton doneButton; //ID = 0
     private GuiButton cancelButton;//ID = 1
 
-    private GuiButtonImage setByIp; //ID = 2
+    private GuiButtonBoolean setByIp; //ID = 2
 
     private GuiTextField details; //ID = 3
     private GuiTextField state; //ID = 4
@@ -39,47 +39,47 @@ public class GuiMinecordConfigPresence extends GuiScreen {
         Keyboard.enableRepeatEvents(true);
         buttonList.clear();
 
-        doneButton = addButton(new GuiButton(0, this.width / 2 - 4 - 150,  450, 150, 20, "Done"));
-        cancelButton = this.addButton(new GuiButton(1, this.width / 2 + 4,  450, 150, 20, "Cancel"));
+        doneButton = addButton(new GuiButton(0, width / 2 - 4 - 150,  450, 150, 20, I18n.format("gui.done")));
+        cancelButton = addButton(new GuiButton(1, width / 2 + 4,  450, 150, 20, I18n.format("gui.cancel")));
 
-        setByIp = new GuiButtonImage(2, this.width / 2, 420, 20, 20, GuiButtonEnum.TRUE.getxTex(), GuiButtonEnum.TRUE.getyTex(), GuiButtonEnum.TRUE.getYdifTex(), GuiMinecordToast.TEXTURE_TOASTS);
-        setByIp.setPosition(this.width / 2, 420);
+        setByIp = addButton(new GuiButtonBoolean(2, width / 2 + 42, 407, Minecord.INSTANCE.config.getOfflinePresence().isAllowServerSet()));
 
-        details = new GuiTextField(3, fontRenderer, this.width / 2 - 138, 95, 276, 20);
+        details = new GuiTextField(3, fontRenderer, width / 2 - 138, 95, 276, 20);
         details.setMaxStringLength(255);
         details.setText(Minecord.INSTANCE.config.getOfflinePresence().getDetails());
         details.setFocused(true);
 
-        state = new GuiTextField(4, fontRenderer, this.width / 2 - 138, 146, 276, 20);
+        state = new GuiTextField(4, fontRenderer, width / 2 - 138, 146, 276, 20);
         state.setMaxStringLength(255);
         state.setText(Minecord.INSTANCE.config.getOfflinePresence().getState());
 
-        large = Minecord.INSTANCE.config.getOfflinePresence().getImageLarge();
-        largeImage = addButton(new GuiButton(5, this.width / 2 - 128, 202, 250, 20, large.getReadable()));
-        largeText = new GuiTextField(6, fontRenderer, this.width / 2 - 138, 253, 276, 20);
+        large = setByIp.state ? OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP : Minecord.INSTANCE.config.getOfflinePresence().getImageLarge();
+        largeImage = addButton(new GuiButton(5, width / 2 - 128, 202, 250, 20, large.getReadable()));
+        largeText = new GuiTextField(6, fontRenderer, width / 2 - 138, 253, 276, 20);
         largeText.setMaxStringLength(255);
         largeText.setText(Minecord.INSTANCE.config.getOfflinePresence().getImageLargeText());
 
         small = Minecord.INSTANCE.config.getOfflinePresence().getImageSmall();
-        smallImage = addButton(new GuiButton(7, this.width / 2 - 125, 309, 250, 20, small.getReadable()));
-        smallText = new GuiTextField(8, fontRenderer, this.width / 2 - 138, 360, 276, 20);
+        smallImage = addButton(new GuiButton(7, width / 2 - 125, 309, 250, 20, small.getReadable()));
+        smallText = new GuiTextField(8, fontRenderer, width / 2 - 138, 360, 276, 20);
         smallText.setMaxStringLength(255);
         smallText.setText(Minecord.INSTANCE.config.getOfflinePresence().getImageSmallText());
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRenderer, "Offline Presence Config", this.width / 2, 40, 16777215);
-        this.drawString(this.fontRenderer, "Presence Details:", this.width / 2 - 138, 80, 16777215);
-        this.drawString(this.fontRenderer, "Presence State:", this.width / 2 - 138, 131, 16777215);
-        this.drawString(this.fontRenderer, "Large Image:", this.width / 2 - 138, 187, 16777215);
-        this.drawString(this.fontRenderer, "Large Image Text:", this.width / 2 - 138, 238, 16777215);
-        this.drawString(this.fontRenderer, "Small Image:", this.width / 2 - 138, 294, 16777215);
-        this.drawString(this.fontRenderer, "Small Image Text:", this.width / 2 - 138, 345, 16777215);
-        this.details.drawTextBox();
-        this.state.drawTextBox();
-        this.largeText.drawTextBox();
-        this.smallText.drawTextBox();
+        drawDefaultBackground();
+        drawCenteredString(fontRenderer, I18n.format("config.presence.title"), width / 2, 40, 16777215);
+        drawString(fontRenderer, I18n.format("config.presence.details"), width / 2 - 138, 80, 16777215);
+        drawString(fontRenderer, I18n.format("config.presence.state"), width / 2 - 138, 131, 16777215);
+        drawString(fontRenderer, I18n.format("config.presence.large"), width / 2 - 138, 187, 16777215);
+        drawString(fontRenderer, I18n.format("config.presence.large.text"), width / 2 - 138, 238, 16777215);
+        drawString(fontRenderer, I18n.format("config.presence.small"), width / 2 - 138, 294, 16777215);
+        drawString(fontRenderer, I18n.format("config.presence.small.text"), width / 2 - 138, 345, 16777215);
+        drawString(fontRenderer, I18n.format("config.presence.byip"), width / 2 - 62, 412, 16777215);
+        details.drawTextBox();
+        state.drawTextBox();
+        largeText.drawTextBox();
+        smallText.drawTextBox();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -88,6 +88,9 @@ public class GuiMinecordConfigPresence extends GuiScreen {
         state.updateCursorCounter();
         largeText.updateCursorCounter();
         smallText.updateCursorCounter();
+        if(setByIp.state){
+            largeImage.enabled = false;
+        }
     }
 
     public boolean doesGuiPauseGame(){
@@ -107,21 +110,29 @@ public class GuiMinecordConfigPresence extends GuiScreen {
                 Minecord.INSTANCE.config.getOfflinePresence().setImageSmallText(smallText.getText());
                 Minecord.INSTANCE.config.getOfflinePresence().setImageLarge(large);
                 Minecord.INSTANCE.config.getOfflinePresence().setImageSmall(small);
+                Minecord.INSTANCE.config.getOfflinePresence().setAllowServerSet(setByIp.state);
                 if(!Minecord.INSTANCE.connection.checkConnectionServer() && Minecord.INSTANCE.config.getGeneral().isEnableOfflinePresence())
                     Minecord.INSTANCE.connection.updateOfflinePresence(true);
-                this.mc.displayGuiScreen(prev);
+                mc.displayGuiScreen(prev);
                 if(prev == null)
-                    this.mc.setIngameFocus();
+                    mc.setIngameFocus();
                 break;
             case 1:
                 this.mc.displayGuiScreen(prev);
                 if(prev == null)
-                    this.mc.setIngameFocus();
+                    mc.setIngameFocus();
                 break;
             case 2:
-                large = OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP;
-                largeImage.displayString = OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP.getReadable();
-                largeImage.enabled = false;
+                setByIp.updateState(!setByIp.state);
+                if(setByIp.state){
+                    large = OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP;
+                    largeImage.displayString = large.getReadable();
+                    largeImage.enabled = false;
+                }else{
+                    large = OfflinePresenceConfig.OfflineImagesLarge.GRASS;
+                    largeImage.displayString = large.getReadable();
+                    largeImage.enabled = true;
+                }
             case 5:
                 large = OfflinePresenceConfig.OfflineImagesLarge.getNext(large);
                 button.displayString = large.getReadable();
@@ -135,23 +146,21 @@ public class GuiMinecordConfigPresence extends GuiScreen {
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        this.details.mouseClicked(mouseX, mouseY, mouseButton);
-        this.state.mouseClicked(mouseX, mouseY, mouseButton);
-        this.largeText.mouseClicked(mouseX, mouseY, mouseButton);
-        this.smallText.mouseClicked(mouseX, mouseY, mouseButton);
+        details.mouseClicked(mouseX, mouseY, mouseButton);
+        state.mouseClicked(mouseX, mouseY, mouseButton);
+        largeText.mouseClicked(mouseX, mouseY, mouseButton);
+        smallText.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     protected void keyTyped(char typedChar, int keyCode){
-        this.details.textboxKeyTyped(typedChar, keyCode);
-        this.state.textboxKeyTyped(typedChar, keyCode);
-        this.largeText.textboxKeyTyped(typedChar, keyCode);
-        this.smallText.textboxKeyTyped(typedChar, keyCode);
+        details.textboxKeyTyped(typedChar, keyCode);
+        state.textboxKeyTyped(typedChar, keyCode);
+        largeText.textboxKeyTyped(typedChar, keyCode);
+        smallText.textboxKeyTyped(typedChar, keyCode);
 
         if (keyCode != 28 && keyCode != 156){
             if (keyCode == 1)
-                this.actionPerformed(cancelButton);
-            else
-                this.actionPerformed(doneButton);
+                actionPerformed(cancelButton);
         }
     }
 }

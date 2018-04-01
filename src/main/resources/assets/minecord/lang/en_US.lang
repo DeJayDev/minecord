@@ -1,0 +1,18 @@
+key.categories.minecord=Minecord Key Bindings
+
+config.menu.title=Minecord Settings
+config.menu.general=General
+config.menu.presence=Offline Presence
+config.general.title=General Settings
+config.general.server=Enable Server Connections:
+config.general.offline=Enable Offline Presence:
+config.general.toasts=Enable Toast Messages:
+config.general.analytics=Disable Analytics:
+config.presence.title=Offline Presence Config
+config.presence.details=Presence Details:
+config.presence.state=Presence State:
+config.presence.large=Large Image:
+config.presence.large.text=Large Image Text:
+config.presence.small=Small Image:
+config.presence.small.text=Small Image Text:
+config.presence.byip=Set Presence by IP:

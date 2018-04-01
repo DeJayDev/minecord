@@ -8,13 +8,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.minecord.minecord.utils.Resources;
 
 import javax.annotation.Nullable;
 
 @SideOnly(Side.CLIENT)
 public class GuiMinecordToast implements IToast{
-
-    public static final ResourceLocation TEXTURE_TOASTS = new ResourceLocation("minecord:textures/gui/toasts.png");
 
     private Icons icon;
     private String title;
@@ -34,7 +33,7 @@ public class GuiMinecordToast implements IToast{
             firstDrawTime = delta;
             drawed = false;
         }
-        toastGui.getMinecraft().getTextureManager().bindTexture(TEXTURE_TOASTS);
+        toastGui.getMinecraft().getTextureManager().bindTexture(Resources.GUI.getResource());
         GlStateManager.color(1.0F, 1.0F, 1.0F);
         if(icon == Icons.CONNECT_SUCCESS){
             toastGui.drawTexturedModalRect(0, 0, 0, 0, 160, 32);
