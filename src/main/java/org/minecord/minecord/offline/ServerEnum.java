@@ -1,4 +1,4 @@
-package org.minecord.minecord;
+package org.minecord.minecord.offline;
 
 import org.minecord.minecord.config.OfflinePresenceConfig;
 
@@ -6,6 +6,7 @@ public enum ServerEnum {
     HYPIXEL("Hypixel", OfflinePresenceConfig.OfflineImagesLarge.HYPIXEL.getKey()),
     HIVE("HiveMC", OfflinePresenceConfig.OfflineImagesLarge.HIVE.getKey()),
     MINEPLEX("Mineplex", OfflinePresenceConfig.OfflineImagesLarge.MINEPLEX.getKey()),
+    PERILOUS("Perilous", OfflinePresenceConfig.OfflineImagesLarge.PERILOUS.getKey()),
     DEFAULT("", "grass"),
     SINGLEPLAYER("Singleplayer", "grass");
 
