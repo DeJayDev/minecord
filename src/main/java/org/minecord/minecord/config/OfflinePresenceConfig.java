@@ -115,7 +115,6 @@ public class OfflinePresenceConfig {
         }
     }
 
-    @SuppressWarnings("unused")
     public enum OfflineImagesLarge{
         SET_BY_IP("", "Set by IP"),
         GRASS("grass", "Grass Block"),
