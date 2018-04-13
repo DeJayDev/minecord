@@ -6,40 +6,49 @@ import org.minecord.minecord.config.OfflinePresenceConfig;
 
 public class OfflinePresenceHandler {
 
-    public DiscordRichPresence assembleOfflinePresence(boolean ingame){
+    public DiscordRichPresence assembleOfflinePresence(boolean ingame) {
         DiscordRichPresence p = new DiscordRichPresence();
 
         ServerEnum currentServer = ServerEnum.DEFAULT;
         String currentIP = Minecord.INSTANCE.connection.getConnectedIp().toLowerCase();
         Boolean useServerData = Minecord.INSTANCE.config.getOfflinePresence().isAllowServerSet();
         OfflinePresenceConfig presenceConfig = Minecord.INSTANCE.config.getOfflinePresence();
+        String details = presenceConfig.getDetails();
 
-        if(currentIP.contains("hive")) {
+        if (currentIP.contains("hive")) {
             currentServer = ServerEnum.HIVE;
-        } else if(currentIP.contains("hypixel")) {
+        } else if (currentIP.contains("hypixel")) {
             currentServer = ServerEnum.HYPIXEL;
-        } else if(currentIP.contains("mineplex")) {
+        } else if (currentIP.contains("mineplex")) {
             currentServer = ServerEnum.MINEPLEX;
-        } else if(currentIP.contains("perilous")) {
+        } else if (currentIP.contains("perilous")) {
             currentServer = ServerEnum.PERILOUS;
-        } else if(currentIP.contains("")) {
+        } else if (currentIP.contains("")) {
             currentServer = ServerEnum.SINGLEPLAYER;
         }
 
-        if(!useServerData) {
-            String details = presenceConfig.getDetails();
+        if(currentServer != null || currentServer != ServerEnum.SINGLEPLAYER){
+            System.out.println(currentServer + "\nName/Key" + currentServer.getName() + "/" + currentServer.getKey());
+        }
+
+        if (!useServerData) {
+            p.details = details.contains("%ip") ? details.replace("%ip", "the Main Menu") : details;
             p.state = presenceConfig.getState();
             p.largeImageText = presenceConfig.getImageLargeText();
             p.smallImageKey = presenceConfig.getImageSmall().getKey();
             p.smallImageText = presenceConfig.getImageSmallText();
             p.instance = 1;
             p.details = parseData(details);
-            if(!ingame) {
-                p.details = details.contains("%ip") ? details.replace("%ip", "the Main Menu") : details;
-                p.largeImageKey = presenceConfig.getImageLarge() == OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP ? OfflinePresenceConfig.OfflineImagesLarge.GRASS.getKey() : presenceConfig.getImageLarge().getKey();
-            }
         } else {
-            //TODO: This tbh
+            if(Minecord.INSTANCE.connection.checkConnectionServer()) {
+                p.details = "testa";
+                p.largeImageKey = presenceConfig.getImageLarge() == OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP ? OfflinePresenceConfig.OfflineImagesLarge.GRASS.getKey() : presenceConfig.getImageLarge().getKey();
+            } else {
+                p.details = "Playing" + currentServer != null ? " " + currentServer.getName() : " Minecraft";
+                p.largeImageKey = currentServer == null ? "blank_server" : currentServer.getName();
+                p.smallImageKey = "command_block";
+                p.smallImageText = "Test.";
+            }
         }
 
 
