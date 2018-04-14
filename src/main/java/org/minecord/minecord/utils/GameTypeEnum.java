@@ -1,4 +1,4 @@
-package org.minecord.minecord;
+package org.minecord.minecord.utils;
 
 public enum GameTypeEnum {
     LOBBY("Lobby", false),

@@ -37,7 +37,6 @@ public class OfflinePresenceHandler {
             p.largeImageText = presenceConfig.getImageLargeText();
             p.smallImageKey = presenceConfig.getImageSmall().getKey();
             p.smallImageText = presenceConfig.getImageSmallText();
-            p.instance = 1;
             p.details = parseData(details);
         } else {
             if(Minecord.INSTANCE.connection.checkConnectionServer()) {

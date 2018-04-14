@@ -3,7 +3,6 @@ package org.minecord.minecord;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
-import org.minecord.minecord.discord.*;
 import org.minecord.minecord.gui.GuiMinecordToast;
 
 public class ConnectionHandler{

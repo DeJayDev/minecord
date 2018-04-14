@@ -27,7 +27,6 @@ import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
 import org.minecord.minecord.offline.OfflinePresenceHandler;
 import org.minecord.minecord.utils.CapeUtil;
-import org.minecord.minecord.utils.Multithreading;
 
 import java.io.File;
 

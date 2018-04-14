@@ -88,7 +88,7 @@ public class CapeUtil implements LayerRenderer<AbstractClientPlayer> {
     }
 
     public enum Players{
-        VATUU(Resources.CAPE_MOJANG, "275df345c3c547689af8440d9cdf593e"),
+        VATUU(Resources.CAPE_DEV, "275df345c3c547689af8440d9cdf593e"),
         DEJAYDEV(Resources.CAPE_DEV, "9f15bf3896dd4d0cba3bcc6e447402ec"),
         LH_KEITH(Resources.CAPE_DEV, "8d96a41c7c03423f93e4c490a198b45c");
 
