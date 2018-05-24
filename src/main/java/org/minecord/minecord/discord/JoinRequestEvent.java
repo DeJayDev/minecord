@@ -1,7 +1,7 @@
 package org.minecord.minecord.discord;
 
 import com.google.gson.JsonObject;
-import net.arikia.dev.drpc.DiscordJoinRequest;
+import net.arikia.dev.drpc.DiscordUser;
 import net.arikia.dev.drpc.callbacks.JoinRequestCallback;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,7 +12,7 @@ import org.minecord.minecord.messaging.PacketMinecordOutEvent;
 public class JoinRequestEvent implements JoinRequestCallback {
 
     @Override
-    public void apply(DiscordJoinRequest request) {
+    public void apply(DiscordUser request) {
         JsonObject payload = new JsonObject();
         payload.addProperty("userId", request.userId);
         payload.addProperty("username", request.username);

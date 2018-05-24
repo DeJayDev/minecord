@@ -16,8 +16,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.minecord.minecord.config.ConfigHandler;
 import org.minecord.minecord.discord.*;
@@ -26,11 +24,9 @@ import org.minecord.minecord.gui.GuiMinecordToast;
 import org.minecord.minecord.messaging.PacketHandler;
 import org.minecord.minecord.messaging.PacketMinecordOutConnectRequest;
 import org.minecord.minecord.offline.OfflinePresenceHandler;
-import org.minecord.minecord.utils.CapeUtil;
 
 import java.io.File;
 
-@SideOnly(Side.CLIENT)
 @Mod(modid = Minecord.MODID, version = Minecord.VERSION, useMetadata = true, canBeDeactivated = true, clientSideOnly = true)
 public class Minecord {
 
@@ -54,6 +50,7 @@ public class Minecord {
         discordUtil = new DiscordUtil();
         presenceHandler = new OfflinePresenceHandler();
         config = new ConfigHandler(new File(e.getModConfigurationDirectory(), "Minecord.json"));
+        profile = MinecordProfile.create(Minecraft.getMinecraft().getSession().getProfile().getId());
     }
 
     @EventHandler
@@ -69,20 +66,6 @@ public class Minecord {
         }));
 
         KeyBindings.init();
-        profile = MinecordProfile.create(Minecraft.getMinecraft().getSession().getProfile().getId());
-    }
-
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event){
-        checkCosmetics();
-    }
-
-    private void checkCosmetics(){
-        Minecraft.getMinecraft().gameSettings.setModelPartEnabled(EnumPlayerModelParts.CAPE, true);
-        Minecraft.getMinecraft().getRenderManager().getSkinMap().forEach((s, p) -> {
-            System.out.println(s);
-            p.addLayer(new CapeUtil(p, CapeUtil.Players.VATUU));
-        });
     }
 
     public static class Events{
@@ -117,8 +100,6 @@ public class Minecord {
         public void onKeyInput(InputEvent.KeyInputEvent e){
             if(KeyBindings.openMinecordConfig.isPressed()){
                 Minecraft.getMinecraft().displayGuiScreen(new GuiMinecordConfig(null));
-            /*}else if(KeyBindings.openMinecordRegister.isPressed()){
-                Minecraft.getMinecraft().displayGuiScreen(new GuiMinecordConfigGeneral(null));*/
             }
         }
     }
@@ -126,7 +107,6 @@ public class Minecord {
     public static class KeyBindings{
 
         public static KeyBinding openMinecordConfig;
-        public static KeyBinding openMinecordRegister;
 
         public static void init(){
             openMinecordConfig = new KeyBinding("Open Minecord Config", Keyboard.KEY_M, I18n.format("key.categories.minecord"));

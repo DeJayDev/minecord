@@ -14,18 +14,19 @@ public final class DiscordUtil {
     public DiscordEventHandlers eventHandler;
 
     public DiscordUtil(){
-        eventHandler = new DiscordEventHandlers();
-        eventHandler.ready = new ReadyEvent();
-        eventHandler.disconnected = new DisconnectedEvent();
-        eventHandler.errored = new ErroredEvent();
-        eventHandler.joinGame = new JoinGameEvent();
-        eventHandler.joinRequest = new JoinRequestEvent();
-        eventHandler.spectateGame = new SpectateGameEvent();
         initializeDiscord();
         runCallbackTask();
     }
 
     public void initializeDiscord(){
+        eventHandler = new DiscordEventHandlers.Builder().
+                setReadyEventHandler(new ReadyEvent()).
+                setDisconnectedEventHandler(new DisconnectedEvent()).
+                setErroredEventHandler(new ErroredEvent()).
+                setJoinGameEventHandler(new JoinGameEvent()).
+                setJoinRequestEventHandler(new JoinRequestEvent()).
+                setSpectateGameEventHandler(new SpectateGameEvent()).
+                build();
         DiscordRPC.discordInitialize(APP_ID, eventHandler, true);
     }
 

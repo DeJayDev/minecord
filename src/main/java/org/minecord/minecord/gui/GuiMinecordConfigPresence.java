@@ -85,11 +85,13 @@ public class GuiMinecordConfigPresence extends GuiScreen {
 
     public void updateScreen(){
         details.updateCursorCounter();
+        if(details.getText().contains("%"))
         state.updateCursorCounter();
         largeText.updateCursorCounter();
         smallText.updateCursorCounter();
         if(setByIp.state){
             largeImage.enabled = false;
+            largeText.setEnabled(false);
         }
     }
 
@@ -125,13 +127,15 @@ public class GuiMinecordConfigPresence extends GuiScreen {
             case 2:
                 setByIp.updateState(!setByIp.state);
                 if(setByIp.state){
+                    largeImage.enabled = false;
+                    largeText.setEnabled(false);
                     large = OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP;
                     largeImage.displayString = large.getReadable();
-                    largeImage.enabled = false;
                 }else{
+                    largeImage.enabled = true;
+                    largeText.setEnabled(true);
                     large = OfflinePresenceConfig.OfflineImagesLarge.GRASS;
                     largeImage.displayString = large.getReadable();
-                    largeImage.enabled = true;
                 }
             case 5:
                 large = OfflinePresenceConfig.OfflineImagesLarge.getNext(large);

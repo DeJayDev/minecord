@@ -1,28 +1,17 @@
 package org.minecord.minecord;
 
-import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.channels.NotYetConnectedException;
 import java.util.UUID;
 
 public final class MinecordProfile {
 
-    //Minecraft Stuff
+    public boolean discordLoaded = false;
+    private DiscordUser discord;
+
     private final UUID uuid;
     private final String displayName;
-
-    //Discord Stuff
-    private final String userID;
-    private final int discriminator;
-    private final String username;
-    private final String avatarBase64; //SoonTM
-
-    //Minecord Stuff
-    private boolean isRegistered;
-    private final boolean isDonator;
-    private Map<Cosmetics, Boolean> cosmetics = new HashMap<>();
 
     public static MinecordProfile create(UUID uuid){
         return new MinecordProfile(uuid);
@@ -32,34 +21,6 @@ public final class MinecordProfile {
         this.uuid = uuid;
         this.displayName = Minecraft.getMinecraft().getSession().getUsername();
         System.out.println(uuid + " | " + displayName);
-
-        /*TODO FETCH DATABASE ENTRY
-          -------------------------
-          if(valid){
-            isRegistered = true;
-            fetchDiscordDetails(JsonObject dbResponse);
-            isDonator = dbResponse.isDonator == true ? true : false;
-            parseCosmetics(JsonObject cosmetics);
-          }else{
-            isRegistered = false;
-            createRegisterPopup();
-          }
-         */
-        this.isRegistered = true;
-        this.isDonator = true;
-
-        this.userID = "1234567890987654321";
-        this.discriminator = 1337;
-        this.username = "Derpface McGee";
-        this.avatarBase64 = "";
-
-        parseCosmetics(null);
-    }
-
-    private void parseCosmetics(JsonObject dbCosmetics){
-        for(Cosmetics c : Cosmetics.values()){
-            cosmetics.put(c, true);
-        }
     }
 
     public UUID getUuid() {
@@ -70,44 +31,46 @@ public final class MinecordProfile {
         return displayName;
     }
 
-    public String getUserID() {
-        return userID;
+    public DiscordUser getDiscordInformation() throws NotYetConnectedException{
+        if(discordLoaded)
+            return discord;
+        else
+            throw new NotYetConnectedException();
     }
 
-    public int getDiscriminator() {
-        return discriminator;
+    public void setDiscordInformation(DiscordUser user){
+        this.discord = user;
+        discordLoaded = true;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    public static class DiscordUser{
 
-    public String getAvatarBase64() {
-        return avatarBase64;
-    }
+        private String userID;
+        private int discriminator;
+        private String username;
+        private String avatarBase64;
 
-    public boolean isRegistered() {
-        return isRegistered;
-    }
+        public DiscordUser(String id, int discrim, String user, String avatar){
+            this.userID = id;
+            this.discriminator = discrim;
+            this.username = user;
+            this.avatarBase64 = avatar;
+        }
 
-    public boolean isDonator() {
-        return isDonator;
-    }
+        public String getUserID() {
+            return userID;
+        }
 
-    public Map<Cosmetics, Boolean> getCosmetics() {
-        return cosmetics;
-    }
+        public int getDiscriminator() {
+            return discriminator;
+        }
 
-    public enum Cosmetics{
-        BEANIE,
-        CAP,
-        HOODIE,
-        BACKPACK,
-        TOPHAT,
-        HYPESQUAD_PIN,
-        NITRO_PIN,
-        PARTNER_PIN,
-        DISDEV_PIN,
-        DEV_PIN;
+        public String getUsername() {
+            return username;
+        }
+
+        public String getAvatarBase64() {
+            return avatarBase64;
+        }
     }
 }
