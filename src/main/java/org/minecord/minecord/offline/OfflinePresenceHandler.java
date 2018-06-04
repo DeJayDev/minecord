@@ -36,7 +36,11 @@ public class OfflinePresenceHandler {
         p.smallImageText = parseData(presenceConfig.getImageSmallText(), currentServer == ServerEnum.DEFAULT ? null : currentServer, ingame);
 
         if(presenceConfig.getImageLarge() == OfflinePresenceConfig.OfflineImagesLarge.SET_BY_IP){
-            p.largeImageKey = currentServer.getKey();
+            p.details = parseData("Playing on %ip%.", currentServer == ServerEnum.DEFAULT ? null : currentServer, ingame);
+            if(ingame)
+                p.largeImageKey = currentServer.getKey();
+            else
+                p.largeImageKey = "grass";
             p.largeImageText = currentServer.getName();
         }else{
             p.largeImageKey = presenceConfig.getImageLarge().getKey();

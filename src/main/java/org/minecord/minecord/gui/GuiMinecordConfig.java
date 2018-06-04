@@ -3,6 +3,7 @@ package org.minecord.minecord.gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import org.minecord.minecord.Minecord;
 
 public class GuiMinecordConfig extends GuiScreen {
 
@@ -27,6 +28,7 @@ public class GuiMinecordConfig extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         drawCenteredString(fontRenderer, I18n.format("config.menu.title"), width / 2, 50, 16777215);
+        drawCenteredString(fontRenderer, Minecord.INSTANCE.connection.checkConnectionDiscord() ? "Discord is §2ready." : "Discord is §4not ready.", width / 2, 290, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

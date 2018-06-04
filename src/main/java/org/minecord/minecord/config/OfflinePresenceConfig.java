@@ -4,22 +4,21 @@ public class OfflinePresenceConfig {
 
     private boolean allowServerSet = true;
 
-    private String details = "Playing on %ip";
+    private String details = "Playing on %ip%";
 
-    private String state = "No server connection";
+    private String state = "Server not connected.";
 
     private OfflineImagesLarge imageLarge = OfflineImagesLarge.SET_BY_IP;
 
-    private String imageLargeText = "Username: %player";
+    private String imageLargeText = "Username: %player%";
 
-    private OfflineImagesSmall imageSmall = OfflineImagesSmall.GREEN;
-
+    private OfflineImagesSmall imageSmall = OfflineImagesSmall.RED;
     private String imageSmallText = "No connection.";
+
 
     public boolean isAllowServerSet() {
         return allowServerSet;
     }
-
     public void setAllowServerSet(boolean allowServerSet) {
         this.allowServerSet = allowServerSet;
     }
@@ -27,7 +26,6 @@ public class OfflinePresenceConfig {
     public String getDetails() {
         return details;
     }
-
     public void setDetails(String details) {
         this.details = details;
     }
@@ -35,7 +33,6 @@ public class OfflinePresenceConfig {
     public String getState() {
         return state;
     }
-
     public void setState(String state) {
         this.state = state;
     }
@@ -43,7 +40,6 @@ public class OfflinePresenceConfig {
     public OfflineImagesLarge getImageLarge() {
         return imageLarge;
     }
-
     public void setImageLarge(OfflineImagesLarge imageLarge) {
         this.imageLarge = imageLarge;
     }
@@ -51,7 +47,6 @@ public class OfflinePresenceConfig {
     public OfflineImagesSmall getImageSmall() {
         return imageSmall;
     }
-
     public void setImageSmall(OfflineImagesSmall imageSmall) {
         this.imageSmall = imageSmall;
     }
@@ -59,7 +54,6 @@ public class OfflinePresenceConfig {
     public String getImageLargeText() {
         return imageLargeText;
     }
-
     public void setImageLargeText(String imageLargeText) {
         this.imageLargeText = imageLargeText;
     }
@@ -72,7 +66,6 @@ public class OfflinePresenceConfig {
         this.imageSmallText = imageSmallText;
     }
 
-    @SuppressWarnings("unused")
     public enum OfflineImagesSmall{
         COMMAND_BLOCK("command_block", "Command Block"),
         CRAFTING_TABLE("crafting_table_front", "Crafting Table"),
